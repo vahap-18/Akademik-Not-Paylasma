@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Akademik Platform - Hoş Geldiniz</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+
+        .welcome-container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .hero-section {
+            padding: 120px 20px 80px; /* Sol ve sağ boşluk eklendi */
+            text-align: center;
+        }
+
+        .hero-title {
+            font-weight: 700;
+            color: #2b3d51;
+            margin-bottom: 24px;
+            font-size: 3rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            color: #5a6d7e;
+            margin-bottom: 40px;
+        }
+
+        .feature-card {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+            padding: 24px;
+            margin-bottom: 30px;
+            height: 100%;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+            .feature-card:hover {
+                transform: translateY(-10px);
+                box-shadow: 0 16px 32px rgba(0,0,0,0.15);
+            }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: #4e73df;
+        }
+
+        .cta-section {
+            background-color: white;
+            padding: 60px 20px; /* Sol ve sağ boşluk eklendi */
+            border-radius: 16px 16px 0 0;
+            box-shadow: 0 -8px 24px rgba(0,0,0,0.08);
+            margin-top: auto;
+        }
+
+        .btn-primary {
+            background-color: #4e73df;
+            border-color: #4e73df;
+            padding: 12px 30px;
+            font-weight: 600;
+            border-radius: 50px;
+            transition: all 0.3s;
+        }
+
+            .btn-primary:hover {
+                background-color: #2e59d9;
+                border-color: #2e59d9;
+                transform: scale(1.05);
+            }
+
+        .btn-secondary {
+            background-color: white;
+            color: #4e73df;
+            border: 2px solid #4e73df;
+            padding: 12px 30px;
+            font-weight: 600;
+            border-radius: 50px;
+            transition: all 0.3s;
+        }
+
+            .btn-secondary:hover {
+                background-color: #f8f9fc;
+                transform: scale(1.05);
+            }
+
+        .navbar {
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            background-color: rgba(255, 255, 255, 0.95) !important;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: #4e73df !important;
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+
+            .hero-section {
+                padding: 80px 10px 40px; /* Daha küçük cihazlar için boşluk azaltıldı */
+            }
+
+            .feature-card {
+                margin-bottom: 15px;
+                padding: 16px; /* İç boşluk azaltıldı */
+            }
+
+            .cta-section {
+                padding: 30px 10px; /* Daha küçük cihazlar için boşluk azaltıldı */
+            }
+
+            .navbar-brand {
+                font-size: 1.2rem;
+            }
+
+            .btn-primary, .btn-secondary {
+                padding: 10px 20px;
+                margin-bottom: 10px;
+            }
+
+            .feature-icon {
+                font-size: 2rem; /* İkon boyutu küçültüldü */
+            }
+        }
+
+
+        .footer {
+            box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.05);
+            border-top: 1px solid #e9ecef;
+        }
+
+        .footer a:hover {
+            color: #0056b3 !important;
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .footer p {
+                font-size: 0.9rem;
+            }
+
+            .footer small {
+                font-size: 0.8rem;
+            }
+        }
+
+        .custom-navbar-brand {
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        .brand-text {
+            text-align: center;
+            margin-left: 30px; /* İkon ile metin arasında boşluk bırakır */
+        }
+
+        .icon-left {
+            position: absolute;
+            left: 0; /* İkonu solda sabitler */
+        }
+    </style>
+</head>
+<body>
+    <div class="welcome-container mt-3">
+        <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
+            <div class="container d-flex justify-content-center">
+                <a class="navbar-brand custom-navbar-brand" href="#">
+                    <i class="fas fa-graduation-cap icon-left"></i>
+                    <span class="brand-text">Akademik Platform</span>
+                </a>
+                <!--<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('login') }}">Giriş Yap</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary text-white ml-2 px-4" href="{{ url_for('register') }}">Kayıt Ol</a>
+                    </li>
+                </ul>
+            </div>-->
+            </div>
+        </nav>
+
+
+        <div class="cta-section">
+            <div class="container text-center">
+                <h2 class="mb-4">Hemen Başlayın</h2>
+                <div>
+                    <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg mr-3">Ücretsiz Kayıt Ol</a>
+                    <a href="{{ url_for('login') }}" class="btn btn-secondary btn-lg">Giriş Yap</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="hero-section">
+            <div class="container">
+                <h1 class="hero-title">Akademik Dünyaya Hoş Geldiniz</h1>
+                <p class="hero-subtitle">Bilgiyi paylaş, öğren ve bağlantı kur.</p>
+                <div class="row mt-5">
+                    <div class="col-md-4">
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-share-alt"></i>
+                            </div>
+                            <h3>Not ve Bilgi Paylaşımı</h3>
+                            <p>Ders notlarınızı, çalışmalarınızı ve bilgilerinizi diğer öğrencilerle paylaşın.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mt-3">
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <h3>Bağlantı Kurun</h3>
+                            <p>Aynı bölümdeki diğer öğrencilerle tanışın, iletişim kurun ve işbirliği yapın.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mt-3">
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-lightbulb"></i>
+                            </div>
+                            <h3>Keşfedin</h3>
+                            <p>Bölümünüzle ilgili yeni kaynaklar keşfedin ve akademik başarınızı artırın.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="footer mt-5 py-4 bg-light">
+            <div class="container text-center">
+                <p class="mb-1">
+                    Created by
+                    <a target="_blank" href="https://spark-sunscreen-70f.notion.site/AcodeX-Web-Sitesi-11d151c2f01d808295beedbbd8bd1486"
+                       class="text-primary font-weight-bold text-decoration-none">
+                        A.Vahap DOĞAN
+                    </a>
+                </p>
+                <small><span class="text-muted">© <span id="currentYear"></span>  Tüm Hakları Saklıdır.</span></small>
+            </div>
+        </footer>
+
+        <script>
+            // Güncel yılı al ve "currentYear" ID'li elemente yaz
+            document.getElementById("currentYear").textContent = new Date().getFullYear();
+        </script>
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

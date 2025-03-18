@@ -1,0 +1,810 @@
+/* Ana Stiller */
+body {
+    background-color: #fafafa;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-size: 0.8rem;
+}
+
+.container {
+    flex: 1;
+    max-width: 90%;
+}
+
+a {
+    color: #0095f6;
+    text-decoration: none;
+}
+
+    a:hover {
+        text-decoration: none;
+    }
+
+/* Navbar */
+.navbar {
+    background-color: white;
+    border-bottom: 1px solid #dbdbdb;
+    padding: 8px 0;
+}
+
+.navbar-brand {
+    font-family: 'Grand Hotel', cursive;
+    font-size: 24px;
+}
+
+/* Instagram tarzı kartlar */
+.instagram-card {
+    border: 1px solid #dbdbdb;
+    border-radius: 3px;
+    background-color: white;
+    margin-bottom: 15px;
+}
+
+.instagram-card-header {
+    padding: 12px 14px;
+    border-bottom: 1px solid #efefef;
+}
+
+.instagram-card-user-name {
+    color: #262626;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.instagram-card-time {
+    font-size: 12px;
+    color: #8e8e8e;
+}
+
+.instagram-card-content {
+    padding: 5px 15px 0px 15px;
+}
+
+.instagram-card-footer {
+    padding: 2px 15px;
+    border-top: 1px solid #efefef;
+}
+
+.instagram-card-buttons {
+    display: flex;
+    font-size: 22px;
+}
+
+.instagram-card-like-button,
+.instagram-card-comment-button,
+.instagram-card-share-button {
+    color: #262626;
+    margin-right: 16px;
+}
+
+    .instagram-card-like-button.liked,
+    .btn-like.liked {
+        color: #ed4956;
+    }
+
+    .instagram-card-like-button:hover,
+    .instagram-card-comment-button:hover,
+    .instagram-card-share-button:hover {
+        text-decoration: none;
+    }
+
+.instagram-card-likes {
+    margin-top: 8px;
+    font-size: 14px;
+}
+
+.instagram-card-comments {
+    border-top: 1px solid #efefef;
+    padding-top: 12px;
+    font-size: 14px;
+}
+
+.latest-comments {
+    margin-top: 8px;
+    font-size: 14px;
+}
+
+.latest-comment {
+    margin-bottom: 4px;
+}
+
+/* Profil Sayfası */
+.profile-section {
+    padding: 30px 0;
+}
+
+.profile-image-container {
+    text-align: center;
+}
+
+.profile-image {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border: 1px solid #efefef;
+}
+
+.profile-info {
+    padding-left: 20px;
+}
+
+.username {
+    font-size: 28px;
+    font-weight: 300;
+    color: #262626;
+}
+
+.follow-btn, .message-btn, .edit-profile-btn {
+    border-radius: 4px;
+    padding: 5px 9px;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.profile-stats {
+    margin: 0 0 10px 0;
+}
+
+    .profile-stats div {
+        font-size: 16px;
+        margin-right: 40px;
+    }
+
+/* Post kartları */
+.post-card {
+    margin-bottom: 15px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+}
+
+    .post-card:hover {
+        transform: translateY(-3px);
+    }
+
+.post-author {
+    display: flex;
+    align-items: center;
+}
+
+.post-author-img {
+    width: 32px;
+    height: 32px;
+    object-fit: cover;
+    margin-right: 10px;
+}
+
+.note-content {
+    white-space: pre-line;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: max-height 0.3s ease;
+    overflow: hidden;
+    display: -webkit-box;
+}
+
+/* Minimal Filtreleme Formu */
+#filterCollapseMobile {
+    margin-top: 1rem;
+    padding: 1rem;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 0.5rem;
+}
+
+    #filterCollapseMobile .form-group {
+        margin-bottom: 1rem;
+    }
+
+/* Sağdan gelen filtreleme formu */
+.filter-sidebar {
+    position: fixed;
+    top: 0;
+    right: -300px; /* Başlangıçta sağdan kapalı */
+    width: 300px;
+    height: 100%;
+    background-color: white;
+    z-index: 1050;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+    transition: right 0.3s ease-in-out; /* Kaydırma animasyonu */
+}
+
+    .filter-sidebar.show {
+        right: 0; /* Formu görünür hale getir */
+    }
+
+@media (min-width: 992px) {
+    .filter-sidebar {
+        display: none; /* Masaüstünde gizle */
+    }
+}
+
+/* Üniversite listesi için özel stiller */
+#university-list {
+    max-height: 200px; /* Liste uzunluğunu sınırla */
+    overflow-y: auto; /* Kaydırma çubuğu ekle */
+    border: 1px solid #ced4da; /* Kenarlık ekle */
+    border-radius: 0.25rem; /* Yuvarlak köşeler */
+}
+
+.list-group-item {
+    cursor: pointer; /* Tıklanabilir hissi ver */
+}
+
+    .list-group-item.active {
+        background-color: #0d6efd; /* Aktif öğenin arka plan rengi */
+        color: white; /* Aktif öğenin metin rengi */
+    }
+
+/* Filtreleme formu stil düzenlemeleri */
+.filter-form select {
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+    border: 1px solid #ced4da;
+    width: 100%;
+}
+
+@media (min-width: 768px) {
+    .filter-form select {
+        width: auto;
+    }
+}
+
+/* Not detay sayfası */
+.note-detail-card {
+    border: 1px solid #dbdbdb;
+    border-radius: 3px;
+}
+
+.author-name {
+    font-weight: 600;
+    color: #262626;
+}
+
+.note-title {
+    font-weight: 600;
+}
+
+.note-files {
+    background-color: #fafafa;
+    border-top: 1px solid #efefef;
+    padding: 15px;
+    border-radius: 0 0 3px 3px;
+}
+
+.files-heading {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.note-engagement {
+    padding: 8px 0;
+}
+
+.engagement-actions {
+    display: flex;
+    align-items: center;
+    font-size: 24px;
+}
+
+.btn-like, .btn-comment, .btn-share, .btn-back {
+    color: #262626;
+    font-size: 24px;
+}
+
+    .btn-like:hover, .btn-comment:hover, .btn-share:hover {
+        text-decoration: none;
+    }
+
+.likes-count {
+    font-size: 14px;
+}
+
+/* Yorum bölümü */
+.comments-card {
+    border: 1px solid #dbdbdb;
+    border-radius: 3px;
+}
+
+.comment-form {
+    padding: 16px 0;
+}
+
+.comment-user-img {
+    width: 32px;
+    height: 32px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.comment-item {
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #efefef;
+}
+
+.comment-content {
+    flex: 1;
+}
+
+.comment-author {
+    font-weight: 600;
+    color: #262626;
+}
+
+.comment-text {
+    color: #262626;
+}
+
+.comment-meta {
+    font-size: 12px;
+}
+
+.comment-like-link, .comment-reply-link {
+    color: #8e8e8e;
+    font-weight: 600;
+}
+
+/* Profil düzenleme sayfası */
+.edit-profile-card {
+    border: 1px solid #dbdbdb;
+    border-radius: 3px;
+}
+
+/* Not içerik sınırlaması */
+.note-content-truncate {
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* 3 satırlık sınır */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.note-content-expanded {
+    max-height: none; /* Sınırsız yükseklik */
+    -webkit-line-clamp: unset; /* Satır sınırlamasını kaldır */
+}
+
+.read-more-btn {
+    color: blue;
+    font-size: 0.8rem;
+    padding: 0;
+    cursor: pointer;
+    background: none;
+    border: none;
+    text-decoration: none;
+    display: block;
+    margin-top: 2px;
+}
+
+/* WhatsApp benzeri mesajlaşma arayüzü */
+.chat-container {
+    height: 70vh;
+    border: 1px solid #e9e9e9;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.chat-header {
+    background-color: #075E54;
+    color: white;
+    padding: 10px 15px;
+    border-bottom: 1px solid #ddd;
+}
+
+.chat-body {
+    height: calc(100% - 120px);
+    overflow-y: auto;
+    background-color: #E5DDD5;
+    padding: 15px;
+}
+
+.chat-footer {
+    height: 60px;
+    background-color: #f5f5f5;
+    padding: 10px;
+    border-top: 1px solid #ddd;
+}
+
+.message {
+    margin-bottom: 15px;
+    position: relative;
+    max-width: 65%;
+}
+
+.message-sent {
+    background-color: #DCF8C6;
+    margin-left: auto;
+    border-radius: 8px 0 8px 8px;
+    padding: 10px;
+}
+
+.message-received {
+    background-color: white;
+    margin-right: auto;
+    border-radius: 0 8px 8px 8px;
+    padding: 10px;
+}
+
+.message-time {
+    font-size: 0.7rem;
+    color: #aaa;
+    text-align: right;
+    margin-top: 5px;
+}
+
+.chat-input {
+    border-radius: 20px;
+    padding: 10px 15px;
+}
+
+.profile-image-upload {
+    margin-bottom: 20px;
+}
+
+.profile-preview {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border: 1px solid #efefef;
+}
+
+/* Messenger Style */
+.messenger-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.messenger-card {
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    border: none;
+    height: calc(100vh - 160px);
+    min-height: 500px;
+}
+
+.messenger-header {
+    background-color: #4267B2;
+    color: white;
+    border-bottom: none;
+    padding: 15px 20px;
+}
+
+.messenger-contact-list {
+    height: 100%;
+    overflow-y: auto;
+    background-color: #f8f9fa;
+}
+
+.messenger-tab-menu .list-group-item {
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    padding: 12px 20px;
+    transition: all 0.2s;
+}
+
+    .messenger-tab-menu .list-group-item.active {
+        background-color: #4267B2;
+        color: white;
+        border-color: #4267B2;
+    }
+
+.messenger-search {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+    padding: 10px 15px;
+}
+
+.messenger-conversations {
+    height: calc(100vh - 220px);
+    min-height: 440px;
+    overflow-y: auto;
+}
+
+.messenger-conversation-area {
+    padding: 15px;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.message-bubble {
+    background-color: #f2f3f5;
+    border-radius: 18px;
+    padding: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    position: relative;
+}
+
+.sent-message {
+    background-color: #e9f0fd;
+    margin-left: 20%;
+}
+
+.unread-message {
+    background-color: #e6f7ff;
+    border-left: 4px solid #0084ff;
+}
+
+.message-sender, .message-recipient {
+    margin-bottom: 10px;
+}
+
+.sender-name, .recipient-name {
+    font-weight: 600;
+    color: #385898;
+}
+
+.message-time {
+    font-size: 0.75rem;
+    color: #606770;
+}
+
+.message-content {
+    color: #1c1e21;
+    line-height: 1.4;
+    font-size: 0.95rem;
+}
+
+.empty-messages {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: #606770;
+}
+
+/* Notification Styles */
+.notification-badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 0.6rem;
+    transform: translate(30%, -30%);
+}
+
+.notification-list {
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+.notification-item {
+    border-left: 3px solid transparent;
+    transition: all 0.2s;
+}
+
+    .notification-item.unread {
+        border-left-color: #007bff;
+        background-color: #f8f9fa;
+    }
+
+.notification-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #f2f3f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.notification-icon-inner {
+    font-size: 1.2rem;
+}
+
+.notification-message {
+    margin-bottom: 5px;
+    font-size: 0.95rem;
+}
+
+/* Yan Menü */
+.user-widget {
+    background-color: white;
+    border: 1px solid #dbdbdb;
+    border-radius: 3px;
+    margin-bottom: 20px;
+}
+
+.user-widget-img {
+    width: 56px;
+    height: 56px;
+    object-fit: cover;
+}
+
+.quick-access {
+    background-color: white;
+    border: 1px solid #dbdbdb;
+    border-radius: 3px;
+}
+
+/* Mobil Uyumlu Düzenlemeler */
+@media (max-width: 770px) {
+    * {
+        font-size: 0.9rem;
+    }
+
+    .profile-image-container {
+        margin-bottom: 20px;
+    }
+
+    .profile-info {
+        padding-left: 0;
+    }
+
+    .instagram-card {
+        margin-bottom: 15px;
+        border-radius: 0;
+    }
+
+    .chat-container {
+        height: 80vh;
+    }
+
+    .profile-section {
+        text-align: center;
+    }
+
+    .profile-stats {
+        justify-content: center;
+    }
+
+    .post-card {
+        margin-bottom: 15px;
+    }
+
+    .btn-like, .btn-comment {
+        font-size: 15px;
+    }
+
+    .navbar-brand {
+        font-size: 1.2rem;
+    }
+
+    .container {
+        padding-left: 5px;
+        padding-right: 5px;
+        max-width: 100%;
+    }
+
+    .message {
+        max-width: 80%;
+    }
+
+    /* Instagram tarzı alt menü */
+    .mobile-bottom-nav {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        background: white;
+        display: flex;
+        justify-content: space-around;
+        padding: 8px 0;
+        border-top: 1px solid #dbdbdb;
+        box-shadow: 0 -1px 5px rgba(0,0,0,0.1);
+    }
+
+    .mobile-nav-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        color: #262626;
+        font-size: 10px;
+        transition: all 0.2s;
+    }
+
+        .mobile-nav-item i {
+            font-size: 24px;
+            margin-bottom: 3px;
+        }
+
+        .mobile-nav-item:active {
+            transform: scale(0.9);
+        }
+
+        .mobile-nav-item.active {
+            color: #0095f6;
+        }
+
+    /* Ana içerik için padding */
+    body {
+        padding-bottom: 70px;
+    }
+
+    /* Filtreleme bölümü */
+    .filter-section {
+        margin-bottom: 15px;
+    }
+
+    .filter-toggle {
+        width: 100%;
+        margin-bottom: 10px;
+        background-color: #f8f9fa;
+        border-color: #f0f0f0;
+        color: #555;
+        font-weight: 500;
+    }
+
+    /* Row ve col padding */
+    .row {
+        margin-left: -5px;
+        margin-right: -5px;
+    }
+
+    .col, .col-1, .col-2, .col-3, .col-4, .col-5, .col-6, .col-7, .col-8, .col-9, .col-10, .col-11, .col-12, .col-sm, .col-md, .col-lg, .col-xl {
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+
+    /* Yan menü mobilde gizle */
+    .col-md-4 {
+        display: none;
+    }
+
+    .col-md-8 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+
+    /* Instagram tarzı kart stilini mobil için güçlendir */
+    .instagram-card {
+        margin-bottom: 12px;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    }
+
+    .instagram-card-header {
+        padding: 10px;
+    }
+
+    .post-author-img, .rounded-circle.mr-2 {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+    .instagram-card-buttons {
+        padding-top: 8px;
+    }
+
+        .instagram-card-buttons a {
+            font-size: 24px;
+            transition: all 0.2s;
+        }
+
+            .instagram-card-buttons a:active {
+                transform: scale(0.9);
+            }
+}
+
+/* Ana Sayfa */
+.feed-header {
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 1rem;
+    margin-bottom: 2rem;
+}
+
+.filter-form .form-group {
+    margin-bottom: 15px;
+}
+
+.filter-form select {
+    border-radius: 20px;
+    padding: 8px 15px;
+    border: 1px solid #ddd;
+    transition: all 0.3s;
+}
+
+    .filter-form select:focus {
+        border-color: #4dabf7;
+        box-shadow: 0 0 0 0.2rem rgba(77, 171, 247, .25);
+    }
+
+.filter-form .btn {
+    border-radius: 20px;
+    padding: 8px 20px;
+}

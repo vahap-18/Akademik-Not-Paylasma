@@ -1,0 +1,375 @@
+{% extends "base.html" %}
+
+{% block title %}Profili Düzenle - {{ super() }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card edit-profile-card">
+                <div class="card-header text-center">
+                    <h5 class="mb-0"><i class="fas fa-user-edit" style="font-size:1.2rem"></i> Profili Düzenle</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{{ url_for('edit_profile') }}" enctype="multipart/form-data">
+                        <div class="row">
+                            <div class="col-md-4 text-center">
+                                <div class="profile-image-upload mb-3">
+                                    <img src="{{ url_for('static', filename='uploads/profiles/' + current_user.profile_image) }}" class="rounded-circle profile-preview" id="profile-preview">
+                                    <div class="mt-3">
+                                        <label for="profile_image" class="btn btn-outline-primary btn-sm">
+                                            <i class="fas fa-camera"></i> Fotoğraf Değiştir
+                                        </label>
+                                        <input type="file" name="profile_image" id="profile_image" accept="image/*" class="d-none" onchange="previewImage(this)">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label for="about_me">Hakkımda</label>
+                                    <textarea class="form-control" id="about_me" name="about_me" rows="4">{{ current_user.about_me or '' }}</textarea>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="university">Üniversite</label>
+                                    <select class="selectpicker form-control" id="university" name="university" data-live-search="true">
+                                        <option value="">Seçiniz</option>
+                                        <option value="Abant İzzet Baysal Üniversitesi" {% if current_user.university=='Abant İzzet Baysal Üniversitesi' %}selected{% endif %}>Abant İzzet Baysal Üniversitesi</option>
+                                        <option value="Acıbadem Üniversitesi" {% if current_user.university=='Acıbadem Üniversitesi' %}selected{% endif %}>Acıbadem Üniversitesi</option>
+                                        <option value="Adana Alparslan Türkeş Bilim ve Teknoloji Üniversitesi" {% if current_user.university=='Adana Alparslan Türkeş Bilim ve Teknoloji Üniversitesi' %}selected{% endif %}>Adana Alparslan Türkeş Bilim ve Teknoloji Üniversitesi</option>
+                                        <option value="Adıyaman Üniversitesi" {% if current_user.university=='Adıyaman Üniversitesi' %}selected{% endif %}>Adıyaman Üniversitesi</option>
+                                        <option value="Adnan Menderes Üniversitesi" {% if current_user.university=='Adnan Menderes Üniversitesi' %}selected{% endif %}>Adnan Menderes Üniversitesi</option>
+                                        <option value="Afyon Kocatepe Üniversitesi" {% if current_user.university=='Afyon Kocatepe Üniversitesi' %}selected{% endif %}>Afyon Kocatepe Üniversitesi</option>
+                                        <option value="Ağrı İbrahim Çeçen Üniversitesi" {% if current_user.university=='Ağrı İbrahim Çeçen Üniversitesi' %}selected{% endif %}>Ağrı İbrahim Çeçen Üniversitesi</option>
+                                        <option value="Ahi Evran Üniversitesi" {% if current_user.university=='Ahi Evran Üniversitesi' %}selected{% endif %}>Ahi Evran Üniversitesi</option>
+                                        <option value="Akdeniz Üniversitesi" {% if current_user.university=='Akdeniz Üniversitesi' %}selected{% endif %}>Akdeniz Üniversitesi</option>
+                                        <option value="Aksaray Üniversitesi" {% if current_user.university=='Aksaray Üniversitesi' %}selected{% endif %}>Aksaray Üniversitesi</option>
+                                        <option value="Alanya Alaaddin Keykubat Üniversitesi" {% if current_user.university=='Alanya Alaaddin Keykubat Üniversitesi' %}selected{% endif %}>Alanya Alaaddin Keykubat Üniversitesi</option>
+                                        <option value="Amasya Üniversitesi" {% if current_user.university=='Amasya Üniversitesi' %}selected{% endif %}>Amasya Üniversitesi</option>
+                                        <option value="Anadolu Üniversitesi" {% if current_user.university=='Anadolu Üniversitesi' %}selected{% endif %}>Anadolu Üniversitesi</option>
+                                        <option value="Ankara Sosyal Bilimler Üniversitesi" {% if current_user.university=='Ankara Sosyal Bilimler Üniversitesi' %}selected{% endif %}>Ankara Sosyal Bilimler Üniversitesi</option>
+                                        <option value="Ankara Üniversitesi" {% if current_user.university=='Ankara Üniversitesi' %}selected{% endif %}>Ankara Üniversitesi</option>
+                                        <option value="Antalya Bilim Üniversitesi" {% if current_user.university=='Antalya Bilim Üniversitesi' %}selected{% endif %}>Antalya Bilim Üniversitesi</option>
+                                        <option value="Ardahan Üniversitesi" {% if current_user.university=='Ardahan Üniversitesi' %}selected{% endif %}>Ardahan Üniversitesi</option>
+                                        <option value="Artvin Çoruh Üniversitesi" {% if current_user.university=='Artvin Çoruh Üniversitesi' %}selected{% endif %}>Artvin Çoruh Üniversitesi</option>
+                                        <option value="Atatürk Üniversitesi" {% if current_user.university=='Atatürk Üniversitesi' %}selected{% endif %}>Atatürk Üniversitesi</option>
+                                        <option value="Balıkesir Üniversitesi" {% if current_user.university=='Balıkesir Üniversitesi' %}selected{% endif %}>Balıkesir Üniversitesi</option>
+                                        <option value="Bandırma Onyedi Eylül Üniversitesi" {% if current_user.university=='Bandırma Onyedi Eylül Üniversitesi' %}selected{% endif %}>Bandırma Onyedi Eylül Üniversitesi</option>
+                                        <option value="Bartın Üniversitesi" {% if current_user.university=='Bartın Üniversitesi' %}selected{% endif %}>Bartın Üniversitesi</option>
+                                        <option value="Başkent Üniversitesi" {% if current_user.university=='Başkent Üniversitesi' %}selected{% endif %}>Başkent Üniversitesi</option>
+                                        <option value="Batman Üniversitesi" {% if current_user.university=='Batman Üniversitesi' %}selected{% endif %}>Batman Üniversitesi</option>
+                                        <option value="Bayburt Üniversitesi" {% if current_user.university=='Bayburt Üniversitesi' %}selected{% endif %}>Bayburt Üniversitesi</option>
+                                        <option value="Beykent Üniversitesi" {% if current_user.university=='Beykent Üniversitesi' %}selected{% endif %}>Beykent Üniversitesi</option>
+                                        <option value="Bezmiâlem Vakıf Üniversitesi" {% if current_user.university=='Bezmiâlem Vakıf Üniversitesi' %}selected{% endif %}>Bezmiâlem Vakıf Üniversitesi</option>
+                                        <option value="Bilecik Şeyh Edebali Üniversitesi" {% if current_user.university=='Bilecik Şeyh Edebali Üniversitesi' %}selected{% endif %}>Bilecik Şeyh Edebali Üniversitesi</option>
+                                        <option value="Bingöl Üniversitesi" {% if current_user.university=='Bingöl Üniversitesi' %}selected{% endif %}>Bingöl Üniversitesi</option>
+                                        <option value="Boğaziçi Üniversitesi" {% if current_user.university=='Boğaziçi Üniversitesi' %}selected{% endif %}>Boğaziçi Üniversitesi</option>
+                                        <option value="Bursa Orhangazi Üniversitesi" {% if current_user.university=='Bursa Orhangazi Üniversitesi' %}selected{% endif %}>Bursa Orhangazi Üniversitesi</option>
+                                        <option value="Bursa Teknik Üniversitesi" {% if current_user.university=='Bursa Teknik Üniversitesi' %}selected{% endif %}>Bursa Teknik Üniversitesi</option>
+                                        <option value="Çanakkale Onsekiz Mart Üniversitesi" {% if current_user.university=='Çanakkale Onsekiz Mart Üniversitesi' %}selected{% endif %}>Çanakkale Onsekiz Mart Üniversitesi</option>
+                                        <option value="Çankaya Üniversitesi" {% if current_user.university=='Çankaya Üniversitesi' %}selected{% endif %}>Çankaya Üniversitesi</option>
+                                        <option value="Çankırı Karatekin Üniversitesi" {% if current_user.university=='Çankırı Karatekin Üniversitesi' %}selected{% endif %}>Çankırı Karatekin Üniversitesi</option>
+                                        <option value="Çukurova Üniversitesi" {% if current_user.university=='Çukurova Üniversitesi' %}selected{% endif %}>Çukurova Üniversitesi</option>
+                                        <option value="Dicle Üniversitesi" {% if current_user.university=='Dicle Üniversitesi' %}selected{% endif %}>Dicle Üniversitesi</option>
+                                        <option value="Doğuş Üniversitesi" {% if current_user.university=='Doğuş Üniversitesi' %}selected{% endif %}>Doğuş Üniversitesi</option>
+                                        <option value="Dokuz Eylül Üniversitesi" {% if current_user.university=='Dokuz Eylül Üniversitesi' %}selected{% endif %}>Dokuz Eylül Üniversitesi</option>
+                                        <option value="Dumlupınar Üniversitesi" {% if current_user.university=='Dumlupınar Üniversitesi' %}selected{% endif %}>Dumlupınar Üniversitesi</option>
+                                        <option value="Düzce Üniversitesi" {% if current_user.university=='Düzce Üniversitesi' %}selected{% endif %}>Düzce Üniversitesi</option>
+                                        <option value="Ege Üniversitesi" {% if current_user.university=='Ege Üniversitesi' %}selected{% endif %}>Ege Üniversitesi</option>
+                                        <option value="Erciyes Üniversitesi" {% if current_user.university=='Erciyes Üniversitesi' %}selected{% endif %}>Erciyes Üniversitesi</option>
+                                        <option value="Erzincan Binali Yıldırım Üniversitesi" {% if current_user.university=='Erzincan Binali Yıldırım Üniversitesi' %}selected{% endif %}>Erzincan Binali Yıldırım Üniversitesi</option>
+                                        <option value="Erzurum Teknik Üniversitesi" {% if current_user.university=='Erzurum Teknik Üniversitesi' %}selected{% endif %}>Erzurum Teknik Üniversitesi</option>
+                                        <option value="Eskişehir Osmangazi Üniversitesi" {% if current_user.university=='Eskişehir Osmangazi Üniversitesi' %}selected{% endif %}>Eskişehir Osmangazi Üniversitesi</option>
+                                        <option value="Eskişehir Teknik Üniversitesi" {% if current_user.university=='Eskişehir Teknik Üniversitesi' %}selected{% endif %}>Eskişehir Teknik Üniversitesi</option>
+                                        <option value="Fatih Sultan Mehmet Üniversitesi" {% if current_user.university=='Fatih Sultan Mehmet Üniversitesi' %}selected{% endif %}>Fatih Sultan Mehmet Üniversitesi</option>
+                                        <option value="Fırat Üniversitesi" {% if current_user.university=='Fırat Üniversitesi' %}selected{% endif %}>Fırat Üniversitesi</option>
+                                        <option value="Galatasaray Üniversitesi" {% if current_user.university=='Galatasaray Üniversitesi' %}selected{% endif %}>Galatasaray Üniversitesi</option>
+                                        <option value="Gazi Üniversitesi" {% if current_user.university=='Gazi Üniversitesi' %}selected{% endif %}>Gazi Üniversitesi</option>
+                                        <option value="Gaziantep Üniversitesi" {% if current_user.university=='Gaziantep Üniversitesi' %}selected{% endif %}>Gaziantep Üniversitesi</option>
+                                        <option value="Gaziosmanpaşa Üniversitesi" {% if current_user.university=='Gaziosmanpaşa Üniversitesi' %}selected{% endif %}>Gaziosmanpaşa Üniversitesi</option>
+                                        <option value="Gebze Teknik Üniversitesi" {% if current_user.university=='Gebze Teknik Üniversitesi' %}selected{% endif %}>Gebze Teknik Üniversitesi</option>
+                                        <option value="Gedik Üniversitesi" {% if current_user.university=='Gedik Üniversitesi' %}selected{% endif %}>Gedik Üniversitesi</option>
+                                        <option value="Giresun Üniversitesi" {% if current_user.university=='Giresun Üniversitesi' %}selected{% endif %}>Giresun Üniversitesi</option>
+                                        <option value="Gümüşhane Üniversitesi" {% if current_user.university=='Gümüşhane Üniversitesi' %}selected{% endif %}>Gümüşhane Üniversitesi</option>
+                                        <option value="Hacettepe Üniversitesi" {% if current_user.university=='Hacettepe Üniversitesi' %}selected{% endif %}>Hacettepe Üniversitesi</option>
+                                        <option value="Hakkari Üniversitesi" {% if current_user.university=='Hakkari Üniversitesi' %}selected{% endif %}>Hakkari Üniversitesi</option>
+                                        <option value="Halıcı Ahmet Urani Üniversitesi" {% if current_user.university=='Halıcı Ahmet Urani Üniversitesi' %}selected{% endif %}>Halıcı Ahmet Urani Üniversitesi</option>
+                                        <option value="Harran Üniversitesi" {% if current_user.university=='Harran Üniversitesi' %}selected{% endif %}>Harran Üniversitesi</option>
+                                        <option value="Hasan Kalyoncu Üniversitesi" {% if current_user.university=='Hasan Kalyoncu Üniversitesi' %}selected{% endif %}>Hasan Kalyoncu Üniversitesi</option>
+                                        <option value="Hitit Üniversitesi" {% if current_user.university=='Hitit Üniversitesi' %}selected{% endif %}>Hitit Üniversitesi</option>
+                                        <option value="Iğdır Üniversitesi" {% if current_user.university=='Iğdır Üniversitesi' %}selected{% endif %}>Iğdır Üniversitesi</option>
+                                        <option value="Işık Üniversitesi" {% if current_user.university=='Işık Üniversitesi' %}selected{% endif %}>Işık Üniversitesi</option>
+                                        <option value="İnönü Üniversitesi" {% if current_user.university=='İnönü Üniversitesi' %}selected{% endif %}>İnönü Üniversitesi</option>
+                                        <option value="İpek Üniversitesi" {% if current_user.university=='İpek Üniversitesi' %}selected{% endif %}>İpek Üniversitesi</option>
+                                        <option value="İskenderun Teknik Üniversitesi" {% if current_user.university=='İskenderun Teknik Üniversitesi' %}selected{% endif %}>İskenderun Teknik Üniversitesi</option>
+                                        <option value="İstanbul 29 Mayıs Üniversitesi" {% if current_user.university=='İstanbul 29 Mayıs Üniversitesi' %}selected{% endif %}>İstanbul 29 Mayıs Üniversitesi</option>
+                                        <option value="İstanbul Arel Üniversitesi" {% if current_user.university=='İstanbul Arel Üniversitesi' %}selected{% endif %}>İstanbul Arel Üniversitesi</option>
+                                        <option value="İstanbul Aydın Üniversitesi" {% if current_user.university=='İstanbul Aydın Üniversitesi' %}selected{% endif %}>İstanbul Aydın Üniversitesi</option>
+                                        <option value="İstanbul Bilgi Üniversitesi" {% if current_user.university=='İstanbul Bilgi Üniversitesi' %}selected{% endif %}>İstanbul Bilgi Üniversitesi</option>
+                                        <option value="İstanbul Bilim Üniversitesi" {% if current_user.university=='İstanbul Bilim Üniversitesi' %}selected{% endif %}>İstanbul Bilim Üniversitesi</option>
+                                        <option value="İstanbul Esenyurt Üniversitesi" {% if current_user.university=='İstanbul Esenyurt Üniversitesi' %}selected{% endif %}>İstanbul Esenyurt Üniversitesi</option>
+                                        <option value="İstanbul Gelişim Üniversitesi" {% if current_user.university=='İstanbul Gelişim Üniversitesi' %}selected{% endif %}>İstanbul Gelişim Üniversitesi</option>
+                                        <option value="İstanbul Kent Üniversitesi" {% if current_user.university=='İstanbul Kent Üniversitesi' %}selected{% endif %}>İstanbul Kent Üniversitesi</option>
+                                        <option value="İstanbul Kültür Üniversitesi" {% if current_user.university=='İstanbul Kültür Üniversitesi' %}selected{% endif %}>İstanbul Kültür Üniversitesi</option>
+                                        <option value="İstanbul Medeniyet Üniversitesi" {% if current_user.university=='İstanbul Medeniyet Üniversitesi' %}selected{% endif %}>İstanbul Medeniyet Üniversitesi</option>
+                                        <option value="İstanbul Medipol Üniversitesi" {% if current_user.university=='İstanbul Medipol Üniversitesi' %}selected{% endif %}>İstanbul Medipol Üniversitesi</option>
+                                        <option value="İstanbul Rumeli Üniversitesi" {% if current_user.university=='İstanbul Rumeli Üniversitesi' %}selected{% endif %}>İstanbul Rumeli Üniversitesi</option>
+                                        <option value="İstanbul Sabahattin Zaim Üniversitesi" {% if current_user.university=='İstanbul Sabahattin Zaim Üniversitesi' %}selected{% endif %}>İstanbul Sabahattin Zaim Üniversitesi</option>
+                                        <option value="İstanbul Ticaret Üniversitesi" {% if current_user.university=='İstanbul Ticaret Üniversitesi' %}selected{% endif %}>İstanbul Ticaret Üniversitesi</option>
+                                        <option value="İstanbul Üniversitesi" {% if current_user.university=='İstanbul Üniversitesi' %}selected{% endif %}>İstanbul Üniversitesi</option>
+                                        <option value="İstanbul Üniversitesi-Cerrahpaşa" {% if current_user.university=='İstanbul Üniversitesi-Cerrahpaşa' %}selected{% endif %}>İstanbul Üniversitesi-Cerrahpaşa</option>
+                                        <option value="İzmir Bakırçay Üniversitesi" {% if current_user.university=='İzmir Bakırçay Üniversitesi' %}selected{% endif %}>İzmir Bakırçay Üniversitesi</option>
+                                        <option value="İzmir Demokrasi Üniversitesi" {% if current_user.university=='İzmir Demokrasi Üniversitesi' %}selected{% endif %}>İzmir Demokrasi Üniversitesi</option>
+                                        <option value="İzmir Ekonomi Üniversitesi" {% if current_user.university=='İzmir Ekonomi Üniversitesi' %}selected{% endif %}>İzmir Ekonomi Üniversitesi</option>
+                                        <option value="İzmir Katip Çelebi Üniversitesi" {% if current_user.university=='İzmir Katip Çelebi Üniversitesi' %}selected{% endif %}>İzmir Katip Çelebi Üniversitesi</option>
+                                        <option value="İzmir Yüksek Teknoloji Enstitüsü" {% if current_user.university=='İzmir Yüksek Teknoloji Enstitüsü' %}selected{% endif %}>İzmir Yüksek Teknoloji Enstitüsü</option>
+                                        <option value="Kadir Has Üniversitesi" {% if current_user.university=='Kadir Has Üniversitesi' %}selected{% endif %}>Kadir Has Üniversitesi</option>
+                                        <option value="Kafkas Üniversitesi" {% if current_user.university=='Kafkas Üniversitesi' %}selected{% endif %}>Kafkas Üniversitesi</option>
+                                        <option value="Kahramanmaraş Sütçü İmam Üniversitesi" {% if current_user.university=='Kahramanmaraş Sütçü İmam Üniversitesi' %}selected{% endif %}>Kahramanmaraş Sütçü İmam Üniversitesi</option>
+                                        <option value="Kanuni Üniversitesi" {% if current_user.university=='Kanuni Üniversitesi' %}selected{% endif %}>Kanuni Üniversitesi</option>
+                                        <option value="Karamanoğlu Mehmetbey Üniversitesi" {% if current_user.university=='Karamanoğlu Mehmetbey Üniversitesi' %}selected{% endif %}>Karamanoğlu Mehmetbey Üniversitesi</option>
+                                        <option value="Karabük Üniversitesi" {% if current_user.university=='Karabük Üniversitesi' %}selected{% endif %}>Karabük Üniversitesi</option>
+                                        <option value="Karadeniz Teknik Üniversitesi" {% if current_user.university=='Karadeniz Teknik Üniversitesi' %}selected{% endif %}>Karadeniz Teknik Üniversitesi</option>
+                                        <option value="Kastamonu Üniversitesi" {% if current_user.university=='Kastamonu Üniversitesi' %}selected{% endif %}>Kastamonu Üniversitesi</option>
+                                        <option value="Kırıkkale Üniversitesi" {% if current_user.university=='Kırıkkale Üniversitesi' %}selected{% endif %}>Kırıkkale Üniversitesi</option>
+                                        <option value="Kırklareli Üniversitesi" {% if current_user.university=='Kırklareli Üniversitesi' %}selected{% endif %}>Kırklareli Üniversitesi</option>
+                                        <option value="Kilis 7 Aralık Üniversitesi" {% if current_user.university=='Kilis 7 Aralık Üniversitesi' %}selected{% endif %}>Kilis 7 Aralık Üniversitesi</option>
+                                        <option value="Koç Üniversitesi" {% if current_user.university=='Koç Üniversitesi' %}selected{% endif %}>Koç Üniversitesi</option>
+                                        <option value="Konya Gıda Ve Tarım Üniversitesi" {% if current_user.university=='Konya Gıda Ve Tarım Üniversitesi' %}selected{% endif %}>Konya Gıda Ve Tarım Üniversitesi</option>
+                                        <option value="Konya Teknik Üniversitesi" {% if current_user.university=='Konya Teknik Üniversitesi' %}selected{% endif %}>Konya Teknik Üniversitesi</option>
+                                        <option value="Kütahya Dumlupınar Üniversitesi" {% if current_user.university=='Kütahya Dumlupınar Üniversitesi' %}selected{% endif %}>Kütahya Dumlupınar Üniversitesi</option>
+                                        <option value="Maltepe Üniversitesi" {% if current_user.university=='Maltepe Üniversitesi' %}selected{% endif %}>Maltepe Üniversitesi</option>
+                                        <option value="Mardin Artuklu Üniversitesi" {% if current_user.university=='Mardin Artuklu Üniversitesi' %}selected{% endif %}>Mardin Artuklu Üniversitesi</option>
+                                        <option value="Marmara Üniversitesi" {% if current_user.university=='Marmara Üniversitesi' %}selected{% endif %}>Marmara Üniversitesi</option>
+                                        <option value="Mehmet Akif Ersoy Üniversitesi" {% if current_user.university=='Mehmet Akif Ersoy Üniversitesi' %}selected{% endif %}>Mehmet Akif Ersoy Üniversitesi</option>
+                                        <option value="Melikşah Üniversitesi" {% if current_user.university=='Melikşah Üniversitesi' %}selected{% endif %}>Melikşah Üniversitesi</option>
+                                        <option value="Mersin Üniversitesi" {% if current_user.university=='Mersin Üniversitesi' %}selected{% endif %}>Mersin Üniversitesi</option>
+                                        <option value="MEF Üniversitesi" {% if current_user.university=='MEF Üniversitesi' %}selected{% endif %}>MEF Üniversitesi</option>
+                                        <option value="Muğla Sıtkı Koçman Üniversitesi" {% if current_user.university=='Muğla Sıtkı Koçman Üniversitesi' %}selected{% endif %}>Muğla Sıtkı Koçman Üniversitesi</option>
+                                        <option value="Mustafa Kemal Üniversitesi" {% if current_user.university=='Mustafa Kemal Üniversitesi' %}selected{% endif %}>Mustafa Kemal Üniversitesi</option>
+                                        <option value="Necmettin Erbakan Üniversitesi" {% if current_user.university=='Necmettin Erbakan Üniversitesi' %}selected{% endif %}>Necmettin Erbakan Üniversitesi</option>
+                                        <option value="Niğde Ömer Halisdemir Üniversitesi" {% if current_user.university=='Niğde Ömer Halisdemir Üniversitesi' %}selected{% endif %}>Niğde Ömer Halisdemir Üniversitesi</option>
+                                        <option value="Nuh Naci Yazgan Üniversitesi" {% if current_user.university=='Nuh Naci Yazgan Üniversitesi' %}selected{% endif %}>Nuh Naci Yazgan Üniversitesi</option>
+                                        <option value="Okan Üniversitesi" {% if current_user.university=='Okan Üniversitesi' %}selected{% endif %}>Okan Üniversitesi</option>
+                                        <option value="Ondokuz Mayıs Üniversitesi" {% if current_user.university=='Ondokuz Mayıs Üniversitesi' %}selected{% endif %}>Ondokuz Mayıs Üniversitesi</option>
+                                        <option value="Ordu Üniversitesi" {% if current_user.university=='Ordu Üniversitesi' %}selected{% endif %}>Ordu Üniversitesi</option>
+                                        <option value="Osmaniye Korkut Ata Üniversitesi" {% if current_user.university=='Osmaniye Korkut Ata Üniversitesi' %}selected{% endif %}>Osmaniye Korkut Ata Üniversitesi</option>
+                                        <option value="Özyeğin Üniversitesi" {% if current_user.university=='Özyeğin Üniversitesi' %}selected{% endif %}>Özyeğin Üniversitesi</option>
+                                        <option value="Pamukkale Üniversitesi" {% if current_user.university=='Pamukkale Üniversitesi' %}selected{% endif %}>Pamukkale Üniversitesi</option>
+                                        <option value="Piri Reis Üniversitesi" {% if current_user.university=='Piri Reis Üniversitesi' %}selected{% endif %}>Piri Reis Üniversitesi</option>
+                                        <option value="Plato Meslek Yüksekokulu" {% if current_user.university=='Plato Meslek Yüksekokulu' %}selected{% endif %}>Plato Meslek Yüksekokulu</option>
+                                        <option value="Recep Tayyip Erdoğan Üniversitesi" {% if current_user.university=='Recep Tayyip Erdoğan Üniversitesi' %}selected{% endif %}>Recep Tayyip Erdoğan Üniversitesi</option>
+                                        <option value="Sabancı Üniversitesi" {% if current_user.university=='Sabancı Üniversitesi' %}selected{% endif %}>Sabancı Üniversitesi</option>
+                                        <option value="Sakarya Üniversitesi" {% if current_user.university=='Sakarya Üniversitesi' %}selected{% endif %}>Sakarya Üniversitesi</option>
+                                        <option value="Sakarya Uygulamalı Bilimler Üniversitesi" {% if current_user.university=='Sakarya Uygulamalı Bilimler Üniversitesi' %}selected{% endif %}>Sakarya Uygulamalı Bilimler Üniversitesi</option>
+                                        <option value="Selçuk Üniversitesi" {% if current_user.university=='Selçuk Üniversitesi' %}selected{% endif %}>Selçuk Üniversitesi</option>
+                                        <option value="Siirt Üniversitesi" {% if current_user.university=='Siirt Üniversitesi' %}selected{% endif %}>Siirt Üniversitesi</option>
+                                        <option value="Sinop Üniversitesi" {% if current_user.university=='Sinop Üniversitesi' %}selected{% endif %}>Sinop Üniversitesi</option>
+                                        <option value="Süleyman Demirel Üniversitesi" {% if current_user.university=='Süleyman Demirel Üniversitesi' %}selected{% endif %}>Süleyman Demirel Üniversitesi</option>
+                                        <option value="Şırnak Üniversitesi" {% if current_user.university=='Şırnak Üniversitesi' %}selected{% endif %}>Şırnak Üniversitesi</option>
+                                        <option value="TED Üniversitesi" {% if current_user.university=='TED Üniversitesi' %}selected{% endif %}>TED Üniversitesi</option>
+                                        <option value="TOBB Ekonomi ve Teknoloji Üniversitesi" {% if current_user.university=='TOBB Ekonomi ve Teknoloji Üniversitesi' %}selected{% endif %}>TOBB Ekonomi ve Teknoloji Üniversitesi</option>
+                                        <option value="Trakya Üniversitesi" {% if current_user.university=='Trakya Üniversitesi' %}selected{% endif %}>Trakya Üniversitesi</option>
+                                        <option value="Tunceli Üniversitesi" {% if current_user.university=='Tunceli Üniversitesi' %}selected{% endif %}>Tunceli Üniversitesi</option>
+                                        <option value="Türk Hava Kurumu Üniversitesi" {% if current_user.university=='Türk Hava Kurumu Üniversitesi' %}selected{% endif %}>Türk Hava Kurumu Üniversitesi</option>
+                                        <option value="Türkiye Uluslararası İslam, Bilim ve Teknoloji Üniversitesi" {% if current_user.university=='Türkiye Uluslararası İslam, Bilim ve Teknoloji Üniversitesi' %}selected{% endif %}>Türkiye Uluslararası İslam, Bilim ve Teknoloji Üniversitesi</option>
+                                        <option value="Ufuk Üniversitesi" {% if current_user.university=='Ufuk Üniversitesi' %}selected{% endif %}>Ufuk Üniversitesi</option>
+                                        <option value="Uludağ Üniversitesi" {% if current_user.university=='Uludağ Üniversitesi' %}selected{% endif %}>Uludağ Üniversitesi</option>
+                                        <option value="Uluslararası Antalya Üniversitesi" {% if current_user.university=='Uluslararası Antalya Üniversitesi' %}selected{% endif %}>Uluslararası Antalya Üniversitesi</option>
+                                        <option value="Uşak Üniversitesi" {% if current_user.university=='Uşak Üniversitesi' %}selected{% endif %}>Uşak Üniversitesi</option>
+                                        <option value="Üsküdar Üniversitesi" {% if current_user.university=='Üsküdar Üniversitesi' %}selected{% endif %}>Üsküdar Üniversitesi</option>
+                                        <option value="Van Yüzüncü Yıl Üniversitesi" {% if current_user.university=='Van Yüzüncü Yıl Üniversitesi' %}selected{% endif %}>Van Yüzüncü Yıl Üniversitesi</option>
+                                        <option value="Yalova Üniversitesi" {% if current_user.university=='Yalova Üniversitesi' %}selected{% endif %}>Yalova Üniversitesi</option>
+                                        <option value="Yeditepe Üniversitesi" {% if current_user.university=='Yeditepe Üniversitesi' %}selected{% endif %}>Yeditepe Üniversitesi</option>
+                                        <option value="Yeni Yüzyıl Üniversitesi" {% if current_user.university=='Yeni Yüzyıl Üniversitesi' %}selected{% endif %}>Yeni Yüzyıl Üniversitesi</option>
+                                        <option value="Yıldız Teknik Üniversitesi" {% if current_user.university=='Yıldız Teknik Üniversitesi' %}selected{% endif %}>Yıldız Teknik Üniversitesi</option>
+                                        <option value="Yüzüncü Yıl Üniversitesi" {% if current_user.university=='Yüzüncü Yıl Üniversitesi' %}selected{% endif %}>Yüzüncü Yıl Üniversitesi</option>
+                                        <option value="Zirve Üniversitesi" {% if current_user.university=='Zirve Üniversitesi' %}selected{% endif %}>Zirve Üniversitesi</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="department">Bölüm</label>
+                                    <select class="selectpicker form-control" id="department" name="department" data-live-search="true">
+                                        <option value="">Seçiniz</option>
+                                        <option value="Ağaç İşleri Endüstri Mühendisliği" {% if current_user.department=='Ağaç İşleri Endüstri Mühendisliği' %}selected{% endif %}>Ağaç İşleri Endüstri Mühendisliği</option>
+                                        <option value="Aktüerya" {% if current_user.department=='Aktüerya' %}selected{% endif %}>Aktüerya</option>
+                                        <option value="Almanca Öğretmenliği" {% if current_user.department=='Almanca Öğretmenliği' %}selected{% endif %}>Almanca Öğretmenliği</option>
+                                        <option value="Antropoloji" {% if current_user.department=='Antropoloji' %}selected{% endif %}>Antropoloji</option>
+                                        <option value="Arkeoloji" {% if current_user.department=='Arkeoloji' %}selected{% endif %}>Arkeoloji</option>
+                                        <option value="Astronomi ve Uzay Bilimleri" {% if current_user.department=='Astronomi ve Uzay Bilimleri' %}selected{% endif %}>Astronomi ve Uzay Bilimleri</option>
+                                        <option value="Bankacılık ve Finans" {% if current_user.department=='Bankacılık ve Finans' %}selected{% endif %}>Bankacılık ve Finans</option>
+                                        <option value="Beden Eğitimi ve Spor Öğretmenliği" {% if current_user.department=='Beden Eğitimi ve Spor Öğretmenliği' %}selected{% endif %}>Beden Eğitimi ve Spor Öğretmenliği</option>
+                                        <option value="Beslenme ve Diyetetik" {% if current_user.department=='Beslenme ve Diyetetik' %}selected{% endif %}>Beslenme ve Diyetetik</option>
+                                        <option value="Bilgi Teknolojileri" {% if current_user.department=='Bilgi Teknolojileri' %}selected{% endif %}>Bilgi Teknolojileri</option>
+                                        <option value="Bilgisayar Mühendisliği" {% if current_user.department=='Bilgisayar Mühendisliği' %}selected{% endif %}>Bilgisayar Mühendisliği</option>
+                                        <option value="Bilgisayar ve Öğretim Teknolojileri Öğretmenliği" {% if current_user.department=='Bilgisayar ve Öğretim Teknolojileri Öğretmenliği' %}selected{% endif %}>Bilgisayar ve Öğretim Teknolojileri Öğretmenliği</option>
+                                        <option value="Biyokimya" {% if current_user.department=='Biyokimya' %}selected{% endif %}>Biyokimya</option>
+                                        <option value="Biyoloji" {% if current_user.department=='Biyoloji' %}selected{% endif %}>Biyoloji</option>
+                                        <option value="Biyomühendislik" {% if current_user.department=='Biyomühendislik' %}selected{% endif %}>Biyomühendislik</option>
+                                        <option value="Biyosistem Mühendisliği" {% if current_user.department=='Biyosistem Mühendisliği' %}selected{% endif %}>Biyosistem Mühendisliği</option>
+                                        <option value="Biyoteknoloji" {% if current_user.department=='Biyoteknoloji' %}selected{% endif %}>Biyoteknoloji</option>
+                                        <option value="Çağdaş Türk Lehçeleri ve Edebiyatları" {% if current_user.department=='Çağdaş Türk Lehçeleri ve Edebiyatları' %}selected{% endif %}>Çağdaş Türk Lehçeleri ve Edebiyatları</option>
+                                        <option value="Çevre Mühendisliği" {% if current_user.department=='Çevre Mühendisliği' %}selected{% endif %}>Çevre Mühendisliği</option>
+                                        <option value="Coğrafya" {% if current_user.department=='Coğrafya' %}selected{% endif %}>Coğrafya</option>
+                                        <option value="Coğrafi Bilgi Sistemleri" {% if current_user.department=='Coğrafi Bilgi Sistemleri' %}selected{% endif %}>Coğrafi Bilgi Sistemleri</option>
+                                        <option value="Denizcilik İşletmeleri Yöneticiliği" {% if current_user.department=='Denizcilik İşletmeleri Yöneticiliği' %}selected{% endif %}>Denizcilik İşletmeleri Yöneticiliği</option>
+                                        <option value="Diş Hekimliği" {% if current_user.department=='Diş Hekimliği' %}selected{% endif %}>Diş Hekimliği</option>
+                                        <option value="Dilbilim" {% if current_user.department=='Dilbilim' %}selected{% endif %}>Dilbilim</option>
+                                        <option value="Dil ve Konuşma Terapisi" {% if current_user.department=='Dil ve Konuşma Terapisi' %}selected{% endif %}>Dil ve Konuşma Terapisi</option>
+                                        <option value="Divan Edebiyatı" {% if current_user.department=='Divan Edebiyatı' %}selected{% endif %}>Divan Edebiyatı</option>
+                                        <option value="Ebelik" {% if current_user.department=='Ebelik' %}selected{% endif %}>Ebelik</option>
+                                        <option value="Eczacılık" {% if current_user.department=='Eczacılık' %}selected{% endif %}>Eczacılık</option>
+                                        <option value="Ekonomi" {% if current_user.department=='Ekonomi' %}selected{% endif %}>Ekonomi</option>
+                                        <option value="Elektrik-Elektronik Mühendisliği" {% if current_user.department=='Elektrik-Elektronik Mühendisliği' %}selected{% endif %}>Elektrik-Elektronik Mühendisliği</option>
+                                        <option value="Endüstri Mühendisliği" {% if current_user.department=='Endüstri Mühendisliği' %}selected{% endif %}>Endüstri Mühendisliği</option>
+                                        <option value="Endüstri Ürünleri Tasarımı" {% if current_user.department=='Endüstri Ürünleri Tasarımı' %}selected{% endif %}>Endüstri Ürünleri Tasarımı</option>
+                                        <option value="Enerji Sistemleri Mühendisliği" {% if current_user.department=='Enerji Sistemleri Mühendisliği' %}selected{% endif %}>Enerji Sistemleri Mühendisliği</option>
+                                        <option value="English Language and Literature" {% if current_user.department=='English Language and Literature' %}selected{% endif %}>İngiliz Dili ve Edebiyatı</option>
+                                        <option value="Felsefe" {% if current_user.department=='Felsefe' %}selected{% endif %}>Felsefe</option>
+                                        <option value="Finans Matematiği" {% if current_user.department=='Finans Matematiği' %}selected{% endif %}>Finans Matematiği</option>
+                                        <option value="Fizik" {% if current_user.department=='Fizik' %}selected{% endif %}>Fizik</option>
+                                        <option value="Fizik Mühendisliği" {% if current_user.department=='Fizik Mühendisliği' %}selected{% endif %}>Fizik Mühendisliği</option>
+                                        <option value="Fizyoterapi ve Rehabilitasyon" {% if current_user.department=='Fizyoterapi ve Rehabilitasyon' %}selected{% endif %}>Fizyoterapi ve Rehabilitasyon</option>
+                                        <option value="Fransızca Öğretmenliği" {% if current_user.department=='Fransızca Öğretmenliği' %}selected{% endif %}>Fransızca Öğretmenliği</option>
+                                        <option value="Gastronomi ve Mutfak Sanatları" {% if current_user.department=='Gastronomi ve Mutfak Sanatları' %}selected{% endif %}>Gastronomi ve Mutfak Sanatları</option>
+                                        <option value="Gemi İnşaatı ve Gemi Makineleri Mühendisliği" {% if current_user.department=='Gemi İnşaatı ve Gemi Makineleri Mühendisliği' %}selected{% endif %}>Gemi İnşaatı ve Gemi Makineleri Mühendisliği</option>
+                                        <option value="Genetik ve Biyomühendislik" {% if current_user.department=='Genetik ve Biyomühendislik' %}selected{% endif %}>Genetik ve Biyomühendislik</option>
+                                        <option value="Gıda Mühendisliği" {% if current_user.department=='Gıda Mühendisliği' %}selected{% endif %}>Gıda Mühendisliği</option>
+                                        <option value="Grafik Tasarımı" {% if current_user.department=='Grafik Tasarımı' %}selected{% endif %}>Grafik Tasarımı</option>
+                                        <option value="Halkla İlişkiler ve Reklamcılık" {% if current_user.department=='Halkla İlişkiler ve Reklamcılık' %}selected{% endif %}>Halkla İlişkiler ve Reklamcılık</option>
+                                        <option value="Havacılık Elektrik ve Elektroniği" {% if current_user.department=='Havacılık Elektrik ve Elektroniği' %}selected{% endif %}>Havacılık Elektrik ve Elektroniği</option>
+                                        <option value="Havacılık Mühendisliği" {% if current_user.department=='Havacılık Mühendisliği' %}selected{% endif %}>Havacılık Mühendisliği</option>
+                                        <option value="Hemşirelik" {% if current_user.department=='Hemşirelik' %}selected{% endif %}>Hemşirelik</option>
+                                        <option value="Hidrojeoloji Mühendisliği" {% if current_user.department=='Hidrojeoloji Mühendisliği' %}selected{% endif %}>Hidrojeoloji Mühendisliği</option>
+                                        <option value="Hukuk" {% if current_user.department=='Hukuk' %}selected{% endif %}>Hukuk</option>
+                                        <option value="İç Mimarlık" {% if current_user.department=='İç Mimarlık' %}selected{% endif %}>İç Mimarlık</option>
+                                        <option value="İktisat" {% if current_user.department=='İktisat' %}selected{% endif %}>İktisat</option>
+                                        <option value="İlahiyat" {% if current_user.department=='İlahiyat' %}selected{% endif %}>İlahiyat</option>
+                                        <option value="İletişim Fakültesi" {% if current_user.department=='İletişim Fakültesi' %}selected{% endif %}>İletişim Fakültesi</option>
+                                        <option value="İlköğretim Matematik Öğretmenliği" {% if current_user.department=='İlköğretim Matematik Öğretmenliği' %}selected{% endif %}>İlköğretim Matematik Öğretmenliği</option>
+                                        <option value="İngilizce Öğretmenliği" {% if current_user.department=='İngilizce Öğretmenliği' %}selected{% endif %}>İngilizce Öğretmenliği</option>
+                                        <option value="İnşaat Mühendisliği" {% if current_user.department=='İnşaat Mühendisliği' %}selected{% endif %}>İnşaat Mühendisliği</option>
+                                        <option value="İnsan Kaynakları Yönetimi" {% if current_user.department=='İnsan Kaynakları Yönetimi' %}selected{% endif %}>İnsan Kaynakları Yönetimi</option>
+                                        <option value="İstatistik" {% if current_user.department=='İstatistik' %}selected{% endif %}>İstatistik</option>
+                                        <option value="İş Sağlığı ve Güvenliği" {% if current_user.department=='İş Sağlığı ve Güvenliği' %}selected{% endif %}>İş Sağlığı ve Güvenliği</option>
+                                        <option value="İşletme" {% if current_user.department=='İşletme' %}selected{% endif %}>İşletme</option>
+                                        <option value="Jeofizik Mühendisliği" {% if current_user.department=='Jeofizik Mühendisliği' %}selected{% endif %}>Jeofizik Mühendisliği</option>
+                                        <option value="Jeoloji Mühendisliği" {% if current_user.department=='Jeoloji Mühendisliği' %}selected{% endif %}>Jeoloji Mühendisliği</option>
+                                        <option value="Kimya" {% if current_user.department=='Kimya' %}selected{% endif %}>Kimya</option>
+                                        <option value="Kimya Mühendisliği" {% if current_user.department=='Kimya Mühendisliği' %}selected{% endif %}>Kimya Mühendisliği</option>
+                                        <option value="Klasik Arkeoloji" {% if current_user.department=='Klasik Arkeoloji' %}selected{% endif %}>Klasik Arkeoloji</option>
+                                        <option value="Konaklama İşletmeciliği" {% if current_user.department=='Konaklama İşletmeciliği' %}selected{% endif %}>Konaklama İşletmeciliği</option>
+                                        <option value="Kuyumculuk ve Mücevher Tasarımı" {% if current_user.department=='Kuyumculuk ve Mücevher Tasarımı' %}selected{% endif %}>Kuyumculuk ve Mücevher Tasarımı</option>
+                                        <option value="Lojistik Yönetimi" {% if current_user.department=='Lojistik Yönetimi' %}selected{% endif %}>Lojistik Yönetimi</option>
+                                        <option value="Maden Mühendisliği" {% if current_user.department=='Maden Mühendisliği' %}selected{% endif %}>Maden Mühendisliği</option>
+                                        <option value="Makine Mühendisliği" {% if current_user.department=='Makine Mühendisliği' %}selected{% endif %}>Makine Mühendisliği</option>
+                                        <option value="Malzeme Bilimi ve Mühendisliği" {% if current_user.department=='Malzeme Bilimi ve Mühendisliği' %}selected{% endif %}>Malzeme Bilimi ve Mühendisliği</option>
+                                        <option value="Matematik" {% if current_user.department=='Matematik' %}selected{% endif %}>Matematik</option>
+                                        <option value="Matematik Mühendisliği" {% if current_user.department=='Matematik Mühendisliği' %}selected{% endif %}>Matematik Mühendisliği</option>
+                                        <option value="Mekatronik Mühendisliği" {% if current_user.department=='Mekatronik Mühendisliği' %}selected{% endif %}>Mekatronik Mühendisliği</option>
+                                        <option value="Meteoroloji Mühendisliği" {% if current_user.department=='Meteoroloji Mühendisliği' %}selected{% endif %}>Meteoroloji Mühendisliği</option>
+                                        <option value="Metalurji ve Malzeme Mühendisliği" {% if current_user.department=='Metalurji ve Malzeme Mühendisliği' %}selected{% endif %}>Metalurji ve Malzeme Mühendisliği</option>
+                                        <option value="Mimarlık" {% if current_user.department=='Mimarlık' %}selected{% endif %}>Mimarlık</option>
+                                        <option value="Moleküler Biyoloji ve Genetik" {% if current_user.department=='Moleküler Biyoloji ve Genetik' %}selected{% endif %}>Moleküler Biyoloji ve Genetik</option>
+                                        <option value="Muhasebe ve Finans Yönetimi" {% if current_user.department=='Muhasebe ve Finans Yönetimi' %}selected{% endif %}>Muhasebe ve Finans Yönetimi</option>
+                                        <option value="Mütercim-Tercümanlık" {% if current_user.department=='Mütercim-Tercümanlık' %}selected{% endif %}>Mütercim-Tercümanlık</option>
+                                        <option value="Müzecilik" {% if current_user.department=='Müzecilik' %}selected{% endif %}>Müzecilik</option>
+                                        <option value="Nanoteknoloji Mühendisliği" {% if current_user.department=='Nanoteknoloji Mühendisliği' %}selected{% endif %}>Nanoteknoloji Mühendisliği</option>
+                                        <option value="Odyoloji" {% if current_user.department=='Odyoloji' %}selected{% endif %}>Odyoloji</option>
+                                        <option value="Otomotiv Mühendisliği" {% if current_user.department=='Otomotiv Mühendisliği' %}selected{% endif %}>Otomotiv Mühendisliği</option>
+                                        <option value="Petrol ve Doğalgaz Mühendisliği" {% if current_user.department=='Petrol ve Doğalgaz Mühendisliği' %}selected{% endif %}>Petrol ve Doğalgaz Mühendisliği</option>
+                                        <option value="Peyzaj Mimarlığı" {% if current_user.department=='Peyzaj Mimarlığı' %}selected{% endif %}>Peyzaj Mimarlığı</option>
+                                        <option value="Polimer Mühendisliği" {% if current_user.department=='Polimer Mühendisliği' %}selected{% endif %}>Polimer Mühendisliği</option>
+                                        <option value="Politika ve Uluslararası İlişkiler" {% if current_user.department=='Politika ve Uluslararası İlişkiler' %}selected{% endif %}>Politika ve Uluslararası İlişkiler</option>
+                                        <option value="Psikoloji" {% if current_user.department=='Psikoloji' %}selected{% endif %}>Psikoloji</option>
+                                        <option value="Radyo, Televizyon ve Sinema" {% if current_user.department=='Radyo, Televizyon ve Sinema' %}selected{% endif %}>Radyo, Televizyon ve Sinema</option>
+                                        <option value="Rekreasyon Yönetimi" {% if current_user.department=='Rekreasyon Yönetimi' %}selected{% endif %}>Rekreasyon Yönetimi</option>
+                                        <option value="Sermaye Piyasaları ve Portföy Yönetimi" {% if current_user.department=='Sermaye Piyasaları ve Portföy Yönetimi' %}selected{% endif %}>Sermaye Piyasaları ve Portföy Yönetimi</option>
+                                        <option value="Sigortacılık ve Aktüerya" {% if current_user.department=='Sigortacılık ve Aktüerya' %}selected{% endif %}>Sigortacılık ve Aktüerya</option>
+                                        <option value="Sinema ve Dijital Medya" {% if current_user.department=='Sinema ve Dijital Medya' %}selected{% endif %}>Sinema ve Dijital Medya</option>
+                                        <option value="Siyaset Bilimi ve Kamu Yönetimi" {% if current_user.department=='Siyaset Bilimi ve Kamu Yönetimi' %}selected{% endif %}>Siyaset Bilimi ve Kamu Yönetimi</option>
+                                        <option value="Sosyal Hizmet" {% if current_user.department=='Sosyal Hizmet' %}selected{% endif %}>Sosyal Hizmet</option>
+                                        <option value="Sosyoloji" {% if current_user.department=='Sosyoloji' %}selected{% endif %}>Sosyoloji</option>
+                                        <option value="Sporthey ve Antrenörlük Eğitimi" {% if current_user.department=='Sporthey ve Antrenörlük Eğitimi' %}selected{% endif %}>Sporthey ve Antrenörlük Eğitimi</option>
+                                        <option value="Şehir ve Bölge Planlama" {% if current_user.department=='Şehir ve Bölge Planlama' %}selected{% endif %}>Şehir ve Bölge Planlama</option>
+                                        <option value="Tarım Ekonomisi" {% if current_user.department=='Tarım Ekonomisi' %}selected{% endif %}>Tarım Ekonomisi</option>
+                                        <option value="Tarım Makinaları ve Teknolojileri Mühendisliği" {% if current_user.department=='Tarım Makinaları ve Teknolojileri Mühendisliği' %}selected{% endif %}>Tarım Makinaları ve Teknolojileri Mühendisliği</option>
+                                        <option value="Tarih" {% if current_user.department=='Tarih' %}selected{% endif %}>Tarih</option>
+                                        <option value="Tıp" {% if current_user.department=='Tıp' %}selected{% endif %}>Tıp</option>
+                                        <option value="Turizm İşletmeciliği" {% if current_user.department=='Turizm İşletmeciliği' %}selected{% endif %}>Turizm İşletmeciliği</option>
+                                        <option value="Turizm Rehberliği" {% if current_user.department=='Turizm Rehberliği' %}selected{% endif %}>Turizm Rehberliği</option>
+                                        <option value="Uluslararası Ticaret" {% if current_user.department=='Uluslararası Ticaret' %}selected{% endif %}>Uluslararası Ticaret</option>
+                                        <option value="Uluslararası İlişkiler" {% if current_user.department=='Uluslararası İlişkiler' %}selected{% endif %}>Uluslararası İlişkiler</option>
+                                        <option value="Uluslararası Lojistik Yönetimi" {% if current_user.department=='Uluslararası Lojistik Yönetimi' %}selected{% endif %}>Uluslararası Lojistik Yönetimi</option>
+                                        <option value="Ulaştırma Mühendisliği" {% if current_user.department=='Ulaştırma Mühendisliği' %}selected{% endif %}>Ulaştırma Mühendisliği</option>
+                                        <option value="Veterinerlik" {% if current_user.department=='Veterinerlik' %}selected{% endif %}>Veterinerlik</option>
+                                        <option value="Yazılım Mühendisliği" {% if current_user.department=='Yazılım Mühendisliği' %}selected{% endif %}>Yazılım Mühendisliği</option>
+                                        <option value="Yönetim Bilişim Sistemleri" {% if current_user.department=='Yönetim Bilişim Sistemleri' %}selected{% endif %}>Yönetim Bilişim Sistemleri</option>
+                                        <option value="Ziraat Mühendisliği" {% if current_user.department=='Ziraat Mühendisliği' %}selected{% endif %}>Ziraat Mühendisliği</option>
+                                        <option value="Diğer"
+                                                {% if current_user.department and current_user.department not in [
+                                                'Ağaç İşleri Endüstri Mühendisliği' , 'Aktüerya' , 'Almanca Öğretmenliği' , 'Antropoloji' , 'Arkeoloji' ,
+                                                'Astronomi ve Uzay Bilimleri' , 'Bankacılık ve Finans' , 'Beden Eğitimi ve Spor Öğretmenliği' ,
+                                                'Beslenme ve Diyetetik' , 'Bilgi Teknolojileri' , 'Bilgisayar Mühendisliği' ,
+                                                'Bilgisayar ve Öğretim Teknolojileri Öğretmenliği' , 'Biyokimya' , 'Biyoloji' , 'Biyomühendislik' ,
+                                                'Biyosistem Mühendisliği' , 'Biyoteknoloji' , 'Çağdaş Türk Lehçeleri ve Edebiyatları' ,
+                                                'Çevre Mühendisliği' , 'Coğrafya' , 'Coğrafi Bilgi Sistemleri' , 'Denizcilik İşletmeleri Yöneticiliği' ,
+                                                'Diş Hekimliği' , 'Dilbilim' , 'Dil ve Konuşma Terapisi' , 'Divan Edebiyatı' , 'Ebelik' ,
+                                                'Eczacılık' , 'Ekonomi' , 'Elektrik-Elektronik Mühendisliği' , 'Endüstri Mühendisliği' ,
+                                                'Endüstri Ürünleri Tasarımı' , 'Enerji Sistemleri Mühendisliği' , 'English Language and Literature' ,
+                                                'Felsefe' , 'Finans Matematiği' , 'Fizik' , 'Fizik Mühendisliği' , 'Fizyoterapi ve Rehabilitasyon' ,
+                                                'Fransızca Öğretmenliği' , 'Gastronomi ve Mutfak Sanatları' ,
+                                                'Gemi İnşaatı ve Gemi Makineleri Mühendisliği' , 'Genetik ve Biyomühendislik' , 'Gıda Mühendisliği' ,
+                                                'Grafik Tasarımı' , 'Halkla İlişkiler ve Reklamcılık' , 'Havacılık Elektrik ve Elektroniği' ,
+                                                'Havacılık Mühendisliği' , 'Hemşirelik' , 'Hidrojeoloji Mühendisliği' , 'Hukuk' , 'İç Mimarlık' ,
+                                                'İktisat' , 'İlahiyat' , 'İletişim Fakültesi' , 'İlköğretim Matematik Öğretmenliği' ,
+                                                'İngilizce Öğretmenliği' , 'İnşaat Mühendisliği' , 'İnsan Kaynakları Yönetimi' , 'İstatistik' ,
+                                                'İş Sağlığı ve Güvenliği' , 'İşletme' , 'Jeofizik Mühendisliği' , 'Jeoloji Mühendisliği' , 'Kimya' ,
+                                                'Kimya Mühendisliği' , 'Klasik Arkeoloji' , 'Konaklama İşletmeciliği' , 'Kuyumculuk ve Mücevher Tasarımı' ,
+                                                'Lojistik Yönetimi' , 'Maden Mühendisliği' , 'Makine Mühendisliği' , 'Malzeme Bilimi ve Mühendisliği' ,
+                                                'Matematik' , 'Matematik Mühendisliği' , 'Mekatronik Mühendisliği' , 'Meteoroloji Mühendisliği' ,
+                                                'Metalurji ve Malzeme Mühendisliği' , 'Mimarlık' , 'Moleküler Biyoloji ve Genetik' ,
+                                                'Muhasebe ve Finans Yönetimi' , 'Mütercim-Tercümanlık' , 'Müzecilik' , 'Nanoteknoloji Mühendisliği' ,
+                                                'Odyoloji' , 'Otomotiv Mühendisliği' , 'Petrol ve Doğalgaz Mühendisliği' , 'Peyzaj Mimarlığı' ,
+                                                'Polimer Mühendisliği' , 'Politika ve Uluslararası İlişkiler' , 'Psikoloji' , 'Radyo, Televizyon ve Sinema' ,
+                                                'Rekreasyon Yönetimi' , 'Sermaye Piyasaları ve Portföy Yönetimi' , 'Sigortacılık ve Aktüerya' ,
+                                                'Sinema ve Dijital Medya' , 'Siyaset Bilimi ve Kamu Yönetimi' , 'Sosyal Hizmet' , 'Sosyoloji' ,
+                                                'Sporthey ve Antrenörlük Eğitimi' , 'Şehir ve Bölge Planlama' , 'Tarım Ekonomisi' ,
+                                                'Tarım Makinaları ve Teknolojileri Mühendisliği' , 'Tarih' , 'Tıp' , 'Turizm İşletmeciliği' ,
+                                                'Turizm Rehberliği' , 'Uluslararası Ticaret' , 'Uluslararası İlişkiler' , 'Uluslararası Lojistik Yönetimi' ,
+                                                'Ulaştırma Mühendisliği' , 'Veterinerlik' , 'Yazılım Mühendisliği' , 'Yönetim Bilişim Sistemleri' ,
+                                                'Ziraat Mühendisliği'
+                                                ] %}selected{% endif %}>
+                                            Diğer
+                                        </option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group text-right">
+                                    <a href="{{ url_for('user_profile', username=current_user.username) }}" class="btn btn-outline-secondary mr-2">İptal</a>
+                                    <button type="submit" class="btn btn-primary">Kaydet</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Profil resmi önizleme script'i -->
+<script>
+    function previewImage(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                document.getElementById('profile-preview').src = e.target.result;
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
+{% endblock %}

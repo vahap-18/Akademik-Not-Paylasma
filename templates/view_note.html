@@ -1,0 +1,197 @@
+{% extends "base.html" %}
+
+{% block title %}{{ note.title }} - {{ super() }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card note-detail-card mb-4">
+                <!-- Not başlığı ve yazarı -->
+                <div class="card-header d-flex align-items-center">
+                    <img src="{{ url_for('static', filename='uploads/' + note.author.profile_image) }}" class="rounded-circle post-author-img mr-2">
+                    <div>
+                        <a href="{{ url_for('user_profile', username=note.author.username) }}" class="author-name">{{ note.author.username }}</a>
+                        <div class="text-muted small">{{ note.timestamp.strftime('%d %b %Y, %H:%M') }}</div>
+                    </div>
+                    <span class="badge badge-info ml-auto">{{ note.subject }}</span>
+                </div>
+
+                <!-- Not içeriği -->
+                <div class="card-body">
+                    <h5 class="note-title mb-3">{{ note.title }}</h5>
+                    <div class="note-content">{{ note.content }}</div>
+
+                    {% if note.content|length > 300 %}
+                                <div class="collapse" id="fullContent-{{ note.id }}">
+                                    <p class="card-text note-full-content">{{ note.content[300:] }}</p>
+                                </div>
+                                <button class="btn btn-link p-0 read-more-btn" style="font-size:0.9rem;" data-toggle="collapse" data-target="#fullContent-{{ note.id }}">devamı...</button>
+                            {% endif %}
+
+                            <script>
+                            document.addEventListener('DOMContentLoaded', function() {
+                              // URL'leri tıklanabilir hale getir
+                              const contentElements = document.querySelectorAll('.note-content, .note-full-content');
+                              contentElements.forEach(element => {
+                                const content = element.innerHTML;
+                                const linkedContent = content.replace(
+                                  /(https?:\/\/[^\s]+)/g, 
+                                  '<a href="$1" target="_blank">$1</a>'
+                                );
+                                element.innerHTML = linkedContent;
+                              });
+                            });
+                            </script>
+
+
+                    {% if note.files.count() > 0 %}
+                        <div class="note-files mt-1">
+                            <b class="files-heading">
+                                <i class="fas fa-paperclip"></i> Ekler ({{ note.files.count() }})
+                            </b>
+
+                            <div class="row">
+                                {% for file in note.files %}
+                                    {% if file.filename.lower().endswith(('.jpg', '.jpeg', '.png', '.gif')) %}
+                                    <div class="col-md-4 col-sm-6 mb-2">
+                                        <div class="note-image-preview">
+                                            <a href="{{ url_for('static', filename='uploads/' + file.filename) }}" target="_blank">
+                                                <img src="{{ url_for('static', filename='uploads/' + file.filename) }}" alt="{{ file.filename }}" class="img-fluid">
+                                            </a>
+                                            <div class="p-1 bg-light">
+                                                <small>{{ file.filename }}</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% else %}
+                                    <div class="col-md-6 mb-2">
+                                        <a href="{{ url_for('static', filename='uploads/' + file.filename) }}" target="_blank" class="list-group-item list-group-item-action">
+                                            <i class="fas fa-file-download mr-2"></i> {{ file.filename }}
+                                        </a>
+                                    </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- Beğeni ve yorum bilgileri -->
+                <div class="card-footer">
+                    <div class="note-engagement">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div class="engagement-actions">
+                                <a href="{{ url_for('like_note', note_id=note.id) }}" class="btn-like {% if current_user.is_authenticated and note.likes.filter_by(user_id=current_user.id).first() %}liked{% endif %}">
+                                    <i class="{% if current_user.is_authenticated and note.likes.filter_by(user_id=current_user.id).first() %}fas{% else %}far{% endif %} fa-heart"></i>
+                                </a>
+                                <a href="#comments-section" class="btn-comment ml-3">
+                                    <i class="far fa-comment"></i>
+                                </a>
+                                <a href="{{ url_for('share_note', note_id=note.id) }}" class="btn-share ml-3" title="Notu paylaş">
+                                    <i class="far fa-paper-plane"></i>
+                                </a>
+                            </div>
+                            <!--<div>
+                                <a href="{{ url_for('index') }}" class="btn-back">
+                                    <i class="fas fa-arrow-left"></i> Geri
+                                </a>
+                            </div>-->
+                        </div>
+
+                        <div class="likes-count mb-2">
+                            <strong>{{ note.likes.count() }} beğeni</strong>
+                        </div>
+
+                        <div class="timestamp text-muted small">
+                            {{ note.timestamp.strftime('%d %B %Y') }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Yorum bölümü -->
+            <div class="card comments-card" id="comments-section">
+                <div class="card-header">
+                    <h5><i class="far fa-comments"></i> Yorumlar ({{ note.comments.count() }})</h5>
+                </div>
+
+                <div class="card-body">
+                    {% if current_user.is_authenticated %}
+                    <form method="POST" action="{{ url_for('add_comment', note_id=note.id) }}" class="comment-form mb-4">
+                        <div class="input-group">
+                            <img src="{{ url_for('static', filename='uploads/profiles/' + current_user.profile_image) }}" class="rounded-circle comment-user-img mr-2">
+                            <input type="text" class="form-control" id="content" name="content" placeholder="Yorum ekle..." required>
+                            <div class="input-group-append">
+                                <button type="submit" class="btn btn-primary">Gönder</button>
+                            </div>
+                        </div>
+                    </form>
+                    {% endif %}
+
+                    <div class="comments-list">
+                        {% if note.comments.count() > 0 %}
+                            {% for comment in note.comments %}
+                            <div class="comment-item d-flex mb-3">
+                                <img src="{{ url_for('static', filename='uploads/profiles/' + comment.author.profile_image) }}" class="rounded-circle comment-user-img mr-2">
+                                <div class="comment-content">
+                                    <div>
+                                        <a href="{{ url_for('user_profile', username=comment.author.username) }}" class="comment-author font-weight-bold">{{ comment.author.username }}</a>
+                                        <span class="comment-text ml-2">{{ comment.content }}</span>
+                                    </div>
+                                    <div class="comment-meta d-flex align-items-center mt-1">
+                                        <small class="text-muted">{{ comment.timestamp.strftime('%d %b %Y, %H:%M') }}</small>
+                                        <a href="{{ url_for('like_comment', comment_id=comment.id) }}" class="comment-like-link ml-3 small {% if current_user.is_authenticated and comment.likes.filter_by(user_id=current_user.id).first() %}text-primary{% endif %}">
+                                            <i class="{% if current_user.is_authenticated and comment.likes.filter_by(user_id=current_user.id).first() %}fas{% else %}far{% endif %} fa-heart"></i>
+                                            <span>{{ comment.likes.count() }}</span>
+                                        </a>
+                                        <a href="#reply-form-{{ comment.id }}" class="comment-reply-link ml-3 small" data-toggle="collapse" role="button">Yanıtla</a>
+                                    </div>
+
+                                    <!-- Yanıt formu -->
+                                    <div class="collapse mt-2" id="reply-form-{{ comment.id }}">
+                                        <form method="POST" action="{{ url_for('reply_comment', comment_id=comment.id) }}">
+                                            <div class="input-group">
+                                                <input type="text" name="reply_content" class="form-control form-control-sm" placeholder="Yanıtınızı yazın...">
+                                                <div class="input-group-append">
+                                                    <button type="submit" class="btn btn-sm btn-primary">Gönder</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                    <!-- Yanıtlar -->
+                                    {% if comment.replies.count() > 0 %}
+                                    <div class="comment-replies mt-2 ml-4">
+                                        {% for reply in comment.replies %}
+                                        <div class="reply-item d-flex mb-2">
+                                            <img src="{{ url_for('static', filename='uploads/profiles/' + reply.author.profile_image) }}" class="rounded-circle comment-user-img mr-2" style="width: 24px; height: 24px;">
+                                            <div class="reply-content">
+                                                <div>
+                                                    <a href="{{ url_for('user_profile', username=reply.author.username) }}" class="reply-author font-weight-bold">{{ reply.author.username }}</a>
+                                                    <span class="reply-text ml-2">{{ reply.content }}</span>
+                                                </div>
+                                                <div class="reply-meta d-flex align-items-center mt-1">
+                                                    <small class="text-muted">{{ reply.timestamp.strftime('%d %b %Y, %H:%M') }}</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="text-center text-muted py-3">
+                                <i class="far fa-comments fa-2x mb-2"></i>
+                                <p>Henüz yorum yapılmamış. İlk yorumu sen yap!</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

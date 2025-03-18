@@ -1,0 +1,226 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+
+            {% if notes %}
+            {% for note in notes %}
+            <div class="card instagram-card mb-2" id="note-{{ note.id }}">
+                <!-- Post Header -->
+                <div class="card-header instagram-card-header d-flex align-items-center">
+                    <img src="{{ url_for('static', filename='uploads/' + note.author.profile_image) }}" class="rounded-circle post-author-img mr-2">
+                    <div>
+                        <a href="{{ url_for('user_profile', username=note.author.username) }}" class="instagram-card-user-name">{{ note.author.username }}</a>
+                        <div class="instagram-card-time small text-muted">{{ note.timestamp.strftime('%d %b %Y, %H:%M') }}</div>
+                    </div>
+                    <span class="badge badge-info ml-auto">{{ note.subject }}</span>
+                </div>
+
+                <!-- Post Content -->
+                <div class="card-body instagram-card-content">
+                    <h6 class="card-title">{{ note.title }}</h6>
+                    <div class="note-content-container">
+                        <p class="card-text note-content-truncate">{{ note.content[:300] }}</p>
+                        {% if note.content|length > 300 %}
+                        <div class="collapse" id="fullContent-{{ note.id }}">
+                            <p class="card-text">{{ note.content[300:] }}</p>
+                        </div>
+                        <button style="font-size:0.9rem;"
+                                class="btn btn-link text-right read-more-btn"
+                                data-toggle="collapse"
+                                data-target="#fullContent-{{ note.id }}">
+                            devamı...
+                        </button>
+                        {% endif %}
+                    </div>
+
+                    {% if note.files.count() > 0 %}
+                    <div class="instagram-card-files mt-2">
+                        <div class="list-group">
+                            {% for file in note.files %}
+                            <a href="{{ url_for('static', filename='uploads/' + file.filename) }}" target="_blank" class="list-group-item list-group-item-action">
+                                <i class="fas fa-file-download mr-2"></i> {{ file.filename }}
+                            </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Like, Comment and Share buttons -->
+                <div class="card-footer instagram-card-footer">
+                    <div class="instagram-card-buttons d-flex mb-1">
+                        <a href="{{ url_for('like_note', note_id=note.id) }}" class="instagram-card-like-button {% if current_user.is_authenticated and note.likes.filter_by(user_id=current_user.id).first() %}liked{% endif %}">
+                            <i class="{% if current_user.is_authenticated and note.likes.filter_by(user_id=current_user.id).first() %}fas{% else %}far{% endif %} fa-heart"></i>
+                        </a>
+                        <a href="{{ url_for('view_note', note_id=note.id) }}#comments-section" class="instagram-card-comment-button ml-3">
+                            <i class="far fa-comment"></i>
+                        </a>
+                        <a href="#" onclick="shareNote({{ note.id }}, '{{ note.title }}', '{{ url_for('index', _anchor='note-' + note.id|string, _external=True) }}')" class="instagram-card-share-button ml-3">
+                            <i class="far fa-paper-plane"></i>
+                        </a>
+                    </div>
+
+                    <div class="instagram-card-likes">
+                        <span class="font-weight-bold">{{ note.likes.count() }} beğeni</span>
+                    </div>
+
+                    <div class="instagram-card-comments" id="comments-section-{{ note.id }}">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span>{{ note.comments.count() }} yorum</span>
+                            <button class="btn btn-sm btn-light toggle-comments" data-target="#note-comments-{{ note.id }}">
+                                Yorumları Göster/Gizle
+                            </button>
+                        </div>
+
+                        <div id="note-comments-{{ note.id }}" class="note-comments collapse">
+                            {% if note.comments.count() > 0 %}
+                            <div class="comments-list mt-2">
+                                {% for comment in note.comments %}
+                                <div class="comment-item d-flex mb-3">
+                                    <img src="{{ url_for('static', filename='uploads/' + comment.author.profile_image) }}" class="rounded-circle comment-user-img mr-2">
+                                    <div class="comment-content">
+                                        <div>
+                                            <a href="{{ url_for('user_profile', username=comment.author.username) }}" class="comment-author font-weight-bold">{{ comment.author.username }}</a>
+                                            <span class="comment-text ml-2">{{ comment.content }}</span>
+                                        </div>
+                                        <div class="comment-meta d-flex align-items-center mt-1">
+                                            <small class="text-muted">{{ comment.timestamp.strftime('%d %b %Y, %H:%M') }}</small>
+                                            <a href="{{ url_for('like_comment', comment_id=comment.id) }}" class="comment-like-link ml-3 small {% if current_user.is_authenticated and comment.likes.filter_by(user_id=current_user.id).first() %}text-primary{% endif %}">
+                                                <i class="{% if current_user.is_authenticated and comment.likes.filter_by(user_id=current_user.id).first() %}fas{% else %}far{% endif %} fa-heart"></i>
+                                                <span>{{ comment.likes.count() }}</span>
+                                            </a>
+                                            <a href="#reply-form-{{ comment.id }}" class="comment-reply-link ml-3 small" data-toggle="collapse" role="button">Yanıtla</a>
+                                        </div>
+
+                                        <!-- Yanıt formu -->
+                                        <div class="collapse mt-2" id="reply-form-{{ comment.id }}">
+                                            <form method="POST" action="{{ url_for('reply_comment', comment_id=comment.id) }}">
+                                                <div class="input-group">
+                                                    <input type="text" name="reply_content" class="form-control form-control-sm" placeholder="Yanıtınızı yazın...">
+                                                    <div class="input-group-append">
+                                                        <button type="submit" class="btn btn-sm btn-outline-primary">Gönder</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+
+                                        <!-- Yanıtlar -->
+                                        {% if comment.replies.count() > 0 %}
+                                        <div class="comment-replies mt-2 ml-4">
+                                            {% for reply in comment.replies %}
+                                            <div class="reply-item d-flex mb-2">
+                                                <img src="{{ url_for('static', filename='uploads/' + reply.author.profile_image) }}" class="rounded-circle comment-user-img mr-2" style="width: 24px; height: 24px;">
+                                                <div class="reply-content">
+                                                    <div>
+                                                        <a href="{{ url_for('user_profile', username=reply.author.username) }}" class="reply-author font-weight-bold">{{ reply.author.username }}</a>
+                                                        <span class="reply-text ml-2">{{ reply.content }}</span>
+                                                    </div>
+                                                    <div class="reply-meta d-flex align-items-center mt-1">
+                                                        <small class="text-muted">{{ reply.timestamp.strftime('%d %b %Y, %H:%M') }}</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {% endfor %}
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            {% else %}
+                            <div class="text-center text-muted py-3">
+                                <p>Henüz yorum yapılmamış. İlk yorumu sen yap!</p>
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        {% if current_user.is_authenticated %}
+                        <form method="POST" action="{{ url_for('add_comment', note_id=note.id) }}" class="mt-2 quick-comment-form">
+                            <div class="input-group mb-2">
+                                <input type="text" class="form-control form-control-sm" name="content" placeholder="Yorum ekle..." required>
+                                <div class="input-group-append">
+                                    <button type="submit" class="btn btn-sm btn-outline-primary">Gönder</button>
+                                </div>
+                            </div>
+                        </form>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle mr-2"></i> Henüz hiç not paylaşılmamış. <a href="{{ url_for('create_note') }}">İlk notu siz paylaşın!</a>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="col-md-4">
+            <!-- Kullanıcı Widget'ı -->
+            <div class="card user-widget mb-4">
+                <div class="card-body d-flex align-items-center">
+
+                    <!--<img src="{{ url_for('static', filename='uploads/profiles/' + current_user.profile_image) }}" class="rounded-circle user-widget-img mr-3">-->
+                    <img src="{{ url_for('static', filename='uploads/' + current_user.profile_image) }}" class="rounded-circle comment-user-img mr-2" style="width: 50px; height: 50px;">
+                    <div>
+                        <h5 class="mb-0">{{ current_user.username }}</h5>
+                        <p class="text-muted mb-0">{{ current_user.university }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hızlı Erişim Menüsü -->
+            <div class="card quick-access mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="fas fa-bolt"></i> Hızlı Erişim</h5>
+                </div>
+                <div class="list-group list-group-flush">
+                    <a href="{{ url_for('create_note') }}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-plus-circle mr-2"></i> Yeni Not Paylaş
+                    </a>
+                    <a href="{{ url_for('user_profile', username=current_user.username) }}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-user mr-2"></i> Profilim
+                    </a>
+                    <a href="{{ url_for('messages') }}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-envelope mr-2"></i> Mesajlarım
+                    </a>
+                    <a href="{{ url_for('search') }}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-search mr-2"></i> Ara
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Tüm "read-more-btn" butonlarını seç
+        const buttons = document.querySelectorAll('.read-more-btn');
+
+        // Her bir buton için olay dinleyicisi ekle
+        buttons.forEach(button => {
+            // Butona bağlı collapse öğesini bul
+            const targetId = button.getAttribute('data-target');
+            const collapseElement = document.querySelector(targetId);
+
+            if (collapseElement) {
+                // Butona tıklandığında manuel olarak durumu kontrol et
+                button.addEventListener('click', function () {
+                    // Collapse öğesinin görünürlüğünü kontrol et
+                    if (collapseElement.classList.contains('show')) {
+                        // Eğer açık ise, kapatma işlemi yapılıyor demektir
+                        button.textContent = 'devamı...';
+                    } else {
+                        // Eğer kapalı ise, açma işlemi yapılıyor demektir
+                        button.textContent = 'daha az...';
+                    }
+                });
+            }
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Ara - {{ super() }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <div class="card">
+            <div class="card-header d-flex align-items-center justify-content-center">
+                <i class="fa fa-search mt-1 mr-2 mb-0" style="font-size:1.2rem;"></i>
+                <h5 class="mb-0">Ara</h5>
+            </div>
+            <div class="card-body">
+                <form action="{{ url_for('search') }}" method="get">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" name="q" placeholder="Kullanıcı veya not ara...">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="submit">Ara</button>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="mt-4">
+                    <h5>Popüler Bölümler</h5>
+                    <div class="list-group">
+                        <a href="{{ url_for('search') }}?q=Bilgisayar%20Mühendisliği" class="list-group-item list-group-item-action">Bilgisayar Mühendisliği</a>
+                        <a href="{{ url_for('search') }}?q=Tıp" class="list-group-item list-group-item-action">Tıp</a>
+                        <a href="{{ url_for('search') }}?q=Hukuk" class="list-group-item list-group-item-action">Hukuk</a>
+                        <a href="{{ url_for('search') }}?q=İşletme" class="list-group-item list-group-item-action">İşletme</a>
+                        <a href="{{ url_for('search') }}?q=Psikoloji" class="list-group-item list-group-item-action">Psikoloji</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

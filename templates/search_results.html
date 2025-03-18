@@ -1,0 +1,78 @@
+
+{% extends "base.html" %}
+
+{% block title %}Arama Sonuçları - {{ super() }}{% endblock %}
+
+{% block content %}
+<h2>"{{ query }}" için arama sonuçları</h2>
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h4>Kullanıcılar ({{ users|length }})</h4>
+            </div>
+            <div class="card-body">
+                {% if users %}
+                    <div class="list-group">
+                    {% for user in users %}
+                        <a href="{{ url_for('user_profile', username=user.username) }}" class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">{{ user.username }}</h5>
+                                <small>Üyelik: {{ user.joined_date.strftime('%d.%m.%Y') }}</small>
+                            </div>
+                            <p class="mb-1">
+                                {% if user.university %}{{ user.university }}{% endif %}
+                                {% if user.university and user.department %} - {% endif %}
+                                {% if user.department %}{{ user.department }}{% endif %}
+                            </p>
+                            <small>
+                                {% if current_user.is_authenticated and current_user != user %}
+                                    {% if current_user.is_following(user) %}
+                                    <span class="badge badge-primary">Takip Ediyorsunuz</span>
+                                    {% else %}
+                                    <span class="badge badge-secondary">Takip Et</span>
+                                    {% endif %}
+                                {% endif %}
+                            </small>
+                        </a>
+                    {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="text-muted">Kullanıcı bulunamadı.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h4>Notlar ({{ notes|length }})</h4>
+            </div>
+            <div class="card-body">
+                {% if notes %}
+                    <div class="list-group">
+                    {% for note in notes %}
+                        <a href="{{ url_for('view_note', note_id=note.id) }}" class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">{{ note.title }}</h5>
+                                <small>{{ note.timestamp.strftime('%d.%m.%Y') }}</small>
+                            </div>
+                            <p class="mb-1">{{ note.content[:100] }}{% if note.content|length > 100 %}...{% endif %}</p>
+                            <small>
+                                Yazar: {{ note.author.username }} | 
+                                <i class="fas fa-heart"></i> {{ note.likes.count() }} | 
+                                <i class="fas fa-comment"></i> {{ note.comments.count() }}
+                            </small>
+                        </a>
+                    {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="text-muted">Not bulunamadı.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

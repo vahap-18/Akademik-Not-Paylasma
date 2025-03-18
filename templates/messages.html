@@ -1,0 +1,612 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="text-center">
+    <h5 class="text-center p-3">Bu sayfa hazırlanana kadar dumanla haberleşmeye devam...</h5> 
+    <br />
+    <img src="{{ url_for('static', filename='icons/duman.gif') }}" alt="Duman Efekti GIF">
+</div>
+
+<!--
+<style>
+    /* Temel Stil */
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f5f5f5;
+        color: #333;
+    }
+
+    .messenger-container {
+        height: 100vh;
+        max-height: 100vh;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .messenger-wrapper {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        background-color: #f5f5f5;
+    }
+
+    .notification {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: #4caf50;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        display: none;
+        z-index: 1000;
+    }
+
+    .contacts-panel {
+        width: 320px;
+        background-color: white;
+        border-right: 1px solid #e0e0e0;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    .chat-panel {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        background-color: white;
+    }
+
+    .message-history {
+        flex: 1;
+        overflow-y: auto;
+        padding: 15px;
+        background-color: #f0f2f5;
+    }
+
+    .message-input {
+        padding: 10px;
+        border-top: 1px solid #e0e0e0;
+        background-color: white;
+        position: sticky;
+        bottom: 0;
+        display: flex;
+        align-items: center;
+    }
+
+    .message-bubble {
+        padding: 10px 15px;
+        border-radius: 18px;
+        position: relative;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    }
+
+    .message-group.sent .message-bubble {
+        background-color: #dcf8c6;
+        align-self: flex-end;
+    }
+
+    .message-group.received .message-bubble {
+        background-color: #e4e6eb;
+        align-self: flex-start;
+    }
+
+    .message-time {
+        font-size: 11px;
+        margin-top: 4px;
+        opacity: 0.7;
+        text-align: right;
+    }
+
+    .message-status {
+        font-size: 12px;
+        margin-left: 5px;
+        color: #aaa;
+    }
+
+    ::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: #c1c1c1;
+        border-radius: 10px;
+    }
+
+    @media (max-width: 768px) {
+        .contacts-panel {
+            width: 100%;
+            position: absolute;
+            left: -100%;
+            transition: left 0.3s ease;
+        }
+
+            .contacts-panel.show-contacts {
+                left: 0;
+            }
+
+        .chat-panel {
+            display: none;
+        }
+
+            .chat-panel.active {
+                display: flex;
+            }
+    }
+
+    .date-separator {
+        text-align: center;
+        margin: 15px 0;
+        position: relative;
+    }
+
+        .date-separator span {
+            background-color: #f0f2f5;
+            padding: 0 10px;
+            position: relative;
+            z-index: 1;
+            font-size: 12px;
+            color: #65676b;
+        }
+
+        .date-separator:before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background-color: #ccc;
+            z-index: 0;
+        }
+
+    .status-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: #ccc;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        border: 2px solid white;
+    }
+
+        .status-dot.online {
+            background-color: #4caf50;
+        }
+
+    .avatar {
+        position: relative;
+        width: 40px;
+        height: 40px;
+    }
+
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+    .unread-badge {
+        background-color: #1877f2;
+        color: white;
+        border-radius: 50%;
+        min-width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        padding: 0 5px;
+    }
+
+    .empty-conversations {
+        color: #65676b;
+    }
+
+        .empty-conversations .empty-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+            color: #ccc;
+        }
+
+    .default-view {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        text-align: center;
+        color: #65676b;
+    }
+
+        .default-view .default-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+            color: #ccc;
+        }
+
+    .conversation-item {
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+    }
+
+        .conversation-item:hover {
+            background-color: #f5f5f5;
+        }
+
+        .conversation-item.active {
+            background-color: #e9f5ff;
+        }
+</style>
+
+<div class="container-fluid messenger-container p-0">
+    <div class="row no-gutters">
+        <!-- Sohbet Listesi (Kişi Paneli) -->
+<!--<div class="col-md-4 contacts-panel-wrapper">-->
+<!-- Mobil Header (Sadece mobilde görünür) -->
+<!--<div class="mobile-header d-md-none">
+    <div class="d-flex align-items-center justify-content-between p-3">
+        <h3 class="mb-0"><i class="fas fa-comments"></i> Mesajlar</h3>
+        <button class="btn btn-sm btn-outline-light mobile-toggle-btn">
+            <i class="fas fa-users"></i>
+        </button>
+    </div>
+</div>-->
+<!-- Sohbet Listesi -->
+<!--<div class="contacts-panel" id="contacts-panel">
+    <div class="contacts-header d-flex align-items-center justify-content-between p-3">
+        <h4 class="mb-0">Sohbetler</h4>
+        <div class="d-md-none">
+            <button class="btn btn-sm btn-link close-contacts-btn">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>-->
+<!-- Arama Kutusu -->
+<!--<div class="messenger-search p-2">
+    <div class="input-group">
+        <input type="text" class="form-control form-control-sm" id="search-input" placeholder="Ara...">
+        <div class="input-group-append">
+            <button class="btn btn-sm btn-outline-primary" type="button">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+    </div>
+</div>-->
+<!-- Sohbet Listesi -->
+<!--<div class="conversation-list" id="conversation-list">
+            {% if conversations %}
+            {% for conversation in conversations %}
+            <div class="conversation-item d-flex align-items-center p-2 border-bottom"
+                 data-username="{{ conversation.partner.username }}"
+                 data-profile="{{ conversation.partner.profile_image_url }}">
+                <div class="avatar">
+                    <img src="{{ conversation.partner.profile_image_url }}" class="rounded-circle" alt="{{ conversation.partner.username }}">
+                    <span class="status-dot {% if conversation.partner.is_online %}online{% endif %}"></span>
+                </div>
+                <div class="conversation-info flex-grow-1 ms-2">
+                    <div class="conversation-name">{{ conversation.partner.username }}</div>
+                    <div class="conversation-preview text-muted small">
+                        {{ conversation.latest_message.body|truncate(30) }}
+                    </div>
+                    <div class="conversation-time small text-muted">
+                        {{ conversation.latest_message.timestamp }}
+                    </div>
+                </div>
+                {% if conversation.unread_count > 0 %}
+                <div class="unread-badge">{{ conversation.unread_count }}</div>
+                {% endif %}
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="empty-conversations p-4 text-center">
+                <div class="empty-icon">
+                    <i class="far fa-comments"></i>
+                </div>
+                <p>Henüz mesajlaşmanız yok</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>-->
+<!-- Sohbet Alanı -->
+<!--<div class="col-md-8 chat-panel-wrapper">
+    <div class="chat-panel" id="chat-panel">-->
+<!-- Varsayılan Görünüm -->
+<!--<div id="default-view" class="default-view">
+    <div class="default-icon">
+        <i class="far fa-comment-dots"></i>
+    </div>
+    <h4>Mesajlarınız</h4>
+    <p class="text-muted">Sohbet etmek için soldaki listeden bir kişi seçin</p>
+</div>-->
+<!-- Konuşma Görünümü -->
+<!--<div id="conversation-view" class="conversation-view d-none">-->
+<!-- Konuşma Başlığı -->
+<!--<div id="conversation-header" class="chat-header p-3">
+    <div class="d-flex align-items-center">
+        <div class="d-md-none me-2">
+            <button class="btn btn-sm btn-link back-to-list-btn">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+        </div>
+        <div class="avatar">
+            <img id="partner-image" src="" class="rounded-circle" alt="">
+            <span class="status-dot" id="partner-status"></span>
+        </div>
+        <div class="flex-grow-1 ms-2">
+            <h5 id="partner-name" class="mb-0"></h5>
+            <small class="text-muted online-status" id="online-status-text">Çevrimdışı</small>
+        </div>
+    </div>
+</div>-->
+<!-- Mesaj Geçmişi -->
+<!--<div id="message-history" class="message-history"></div>-->
+<!-- Mesaj Girişi -->
+<!--<div class="message-input p-3">
+                        <form id="message-form" method="POST">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <button type="button" class="btn btn-link emoji-btn">
+                                        <i class="far fa-smile"></i>
+                                    </button>
+                                </div>
+                                <textarea id="message-body" name="body" class="form-control"
+                                          placeholder="Mesajınızı yazın..." rows="1" required></textarea>
+                                <div class="input-group-append">
+                                    <button type="submit" class="btn btn-primary send-btn">
+                                        <i class="fas fa-paper-plane"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>-->
+<!-- Bildirim Alanı -->
+<!--<div class="notification" id="notification">
+    <span id="notification-text"></span>
+</div>-->
+<!-- WebSocket için Socket.IO CDN -->
+<!--<script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+
+<script>
+    // WebSocket bağlantısı
+    const socket = io();
+
+    // Kullanıcı bilgileri
+    let currentUser = "{{ current_user.username }}" || "default_user"; // Varsayılan kullanıcı adı ataması
+    let activeConversation = null;
+
+    // Sayfa yüklendiğinde çalışacak fonksiyonlar
+    document.addEventListener("DOMContentLoaded", function () {
+        // WebSocket bağlantısını başlat
+        initializeSocketConnection();
+
+        // Mobil görünüm için olay dinleyicilerini ayarla
+        setupMobileListeners();
+
+        // Konuşma listesi olaylarını ayarla
+        setupConversationListeners();
+
+        // Mesaj gönderme formunu hazırla
+        setupMessageForm();
+
+        // Textarea otomatik yükseklik ayarı
+        setupAutoResizeTextarea();
+
+        // Arama işlevselliğini ayarla
+        setupSearchFunctionality();
+
+        // Sohbet listesini yükle
+        loadConversations();
+    });
+
+    /**
+     * WebSocket bağlantısını başlatır.
+     */
+    function initializeSocketConnection() {
+        // Sunucuya bağlanıldığında
+        socket.on("connect", () => {
+            console.log("WebSocket bağlantısı başarıyla kuruldu.");
+        });
+
+        // Bağlantı hatası durumunda
+        socket.on("connect_error", (error) => {
+            console.error("WebSocket bağlantısı kurulamadı:", error.message);
+            showNotification("Sunucuya bağlanırken bir hata oluştu. Lütfen sayfayı yenileyin.", "error");
+        });
+
+        // Kullanıcı durumu değiştiğinde
+        socket.on("user_status", (data) => {
+            console.log("Kullanıcı durumu değişti:", data);
+            updateUserStatus(data.username, data.status);
+        });
+
+        // Yeni mesaj alındığında
+        socket.on("new_message", (data) => {
+            console.log("Yeni mesaj alındı:", data);
+
+            // Eğer mesaj aktif konuşmadan geliyorsa ekrana ekle
+            if (activeConversation && activeConversation.partner.username === data.sender) {
+                appendMessage(data);
+            } else {
+                // Bildirim göster
+                showNotification(`Yeni mesaj: ${data.body}`, "info");
+            }
+
+            // Konuşma listesini güncelle
+            updateConversationList(data);
+        });
+    }
+
+    /**
+     * Mobil görünüm için olay dinleyicilerini ayarlar.
+     */
+    function setupMobileListeners() {
+        const mobileToggleBtn = document.querySelector(".mobile-toggle-btn");
+        const closeContactsBtn = document.querySelector(".close-contacts-btn");
+        const backToListBtn = document.querySelector(".back-to-list-btn");
+        const contactsPanel = document.querySelector("#contacts-panel");
+        const chatPanel = document.querySelector("#chat-panel");
+
+        // Mobilde sohbet listesini aç/kapa
+        mobileToggleBtn.addEventListener("click", () => {
+            contactsPanel.classList.toggle("show-contacts");
+            chatPanel.classList.remove("active");
+        });
+
+        // Sohbet listesini kapat
+        closeContactsBtn.addEventListener("click", () => {
+            contactsPanel.classList.remove("show-contacts");
+            chatPanel.classList.add("active");
+        });
+
+        // Sohbet listesine geri dön
+        backToListBtn.addEventListener("click", () => {
+            contactsPanel.classList.add("show-contacts");
+            chatPanel.classList.remove("active");
+        });
+    }
+
+    /**
+     * Konuşma listesi olaylarını ayarlar.
+     */
+    function setupConversationListeners() {
+        const conversationItems = document.querySelectorAll(".conversation-item");
+
+        conversationItems.forEach((item) => {
+            item.addEventListener("click", () => {
+                const username = item.getAttribute("data-username");
+                const profileImage = item.getAttribute("data-profile");
+
+                // Aktif konuşmayı güncelle
+                activeConversation = {
+                    partner: {
+                        username: username,
+                        profile_image_url: profileImage,
+                    },
+                };
+
+                // Konuşma görünümünü aç
+                openConversationView(username, profileImage);
+
+                // Mesaj geçmişini yükle
+                loadMessageHistory(username);
+            });
+        });
+    }
+
+    /**
+     * Mesaj gönderme formunu hazırlar.
+     */
+    function setupMessageForm() {
+        const messageForm = document.querySelector("#message-form");
+
+        messageForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+
+            const messageBody = document.querySelector("#message-body").value.trim();
+
+            if (messageBody && activeConversation) {
+                const messageData = {
+                    sender: currentUser,
+                    receiver: activeConversation.partner.username,
+                    body: messageBody,
+                    timestamp: new Date().toISOString(),
+                };
+
+                // Mesajı WebSocket üzerinden gönder
+                socket.emit("send_message", messageData);
+
+                // Mesajı ekrana ekle
+                appendMessage(messageData);
+
+                // Formu temizle
+                messageForm.reset();
+            }
+        });
+    }
+
+    /**
+     * Mesajı ekrana ekler.
+     */
+    function appendMessage(message) {
+        const messageHistory = document.querySelector("#message-history");
+
+        const messageGroup = document.createElement("div");
+        messageGroup.classList.add("message-group", message.sender === currentUser ? "sent" : "received");
+
+        const messageBubble = document.createElement("div");
+        messageBubble.classList.add("message-bubble");
+        messageBubble.textContent = message.body;
+
+        const messageTime = document.createElement("div");
+        messageTime.classList.add("message-time");
+        messageTime.textContent = new Date(message.timestamp).toLocaleTimeString();
+
+        messageGroup.appendChild(messageBubble);
+        messageGroup.appendChild(messageTime);
+        messageHistory.appendChild(messageGroup);
+
+        // Mesaj geçmişini en alta kaydır
+        messageHistory.scrollTop = messageHistory.scrollHeight;
+    }
+
+    /**
+     * Konuşma görünümünü açar.
+     */
+    function openConversationView(username, profileImage) {
+        const defaultView = document.querySelector("#default-view");
+        const conversationView = document.querySelector("#conversation-view");
+
+        defaultView.classList.add("d-none");
+        conversationView.classList.remove("d-none");
+
+        document.querySelector("#partner-name").textContent = username;
+        document.querySelector("#partner-image").src = profileImage;
+    }
+
+    /**
+     * Mesaj geçmişini yükler.
+     */
+    function loadMessageHistory(username) {
+        // Burada sunucudan mesaj geçmişini çekebilirsiniz
+        // Örnek:
+        // fetch(`/api/messages/${username}`)
+        //     .then(response => response.json())
+        //     .then(data => {
+        //         data.forEach(message => appendMessage(message));
+        //     });
+    }
+
+    /**
+     * Bildirim gösterir.
+     */
+    function showNotification(message, type = "info") {
+        const notification = document.querySelector("#notification");
+        const notificationText = document.querySelector("#notification-text");
+
+        notificationText.textContent = message;
+        notification.style.display = "block";
+
+        setTimeout(() => {
+            notification.style.display = "none";
+        }, 3000);
+    }
+</script>
+    -->
+{% endblock %}

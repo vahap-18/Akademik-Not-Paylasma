@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block title %}Not Paylaş - {{ super() }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <div class="card">
+            <div class="card-header d-flex align-items-center justify-content-center">
+                <i class="fas fa-edit mt-1 mr-2 mb-0" style="font-size:1.2rem;"></i> 
+                <h5 class="mb-0">Not Paylaş</h5>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('create_note') }}" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="title">Başlık</label>
+                        <input type="text" class="form-control" id="title" name="title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">Ders/Konu</label>
+                        <input type="text" class="form-control" id="subject" name="subject">
+                    </div>
+                    <div class="form-group">
+                        <label for="content">İçerik</label>
+                        <textarea class="form-control" id="content" name="content" rows="8" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="files">Dosyalar (PDF, DOCX, vb.)</label>
+                        <input type="file" class="form-control-file" id="files" name="files" multiple>
+                        <small class="form-text text-muted">Birden fazla dosya seçebilirsiniz.</small>
+                    </div>
+                    <div class="form-group w-100">
+                        <div class="row w-100">
+                            <div class="col-md-12 d-flex justify-content-center align-items-center">
+                                <button type="submit" class="btn btn-primary w-100">Paylaş</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function shareWithUser(username) {
+    // Not içeriğini al
+    var title = document.getElementById('title').value;
+    var content = document.getElementById('content').value;
+
+    if (!title || !content) {
+        alert('Paylaşmak için başlık ve içerik girmelisiniz!');
+        return;
+    }
+
+    // Mesaj içeriği oluştur
+    var message = 'Not Paylaşımı: ' + title + ' - ' + content.substring(0, 50) + '...';
+
+    // Yeni bir form oluştur
+    var form = document.createElement('form');
+    form.method = 'POST';
+    form.action = '/send_message/' + username;
+
+    // Mesaj içeriği için input oluştur
+    var input = document.createElement('input');
+    input.type = 'hidden';
+    input.name = 'body';
+    input.value = message;
+    form.appendChild(input);
+
+    // Formu gizle ve gönder
+    document.body.appendChild(form);
+    form.submit();
+}
+</script>
+{% endblock %}

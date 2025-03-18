@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Akademik Paylaşım Platformu{% endblock %}</title>
+
+    {% block styles %}
+    <!-- Favicon -->
+    <link rel="icon" href="{{ url_for('static', filename='icons/title-icon.png') }}" type="image/png">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+
+    <!-- Temel Stil Dosyası -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <!-- Açık Mod Stilleri -->
+    <link id="theme-style" rel="stylesheet" href="{{ url_for('static', filename='css/light-mode.css') }}">
+
+    {% endblock %}
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-sm mb-4">
+        <div class="container position-relative">
+            <!-- Navbar Brand - Centered on mobile -->
+            <a class="navbar-brand text-dark font-weight-bold d-lg-none" href="{{ url_for('index') }}" style="font-size: 1rem; position: absolute; left: 50%; transform: translateX(-50%); z-index: 1;">
+                <i class="fas fa-graduation-cap mr-2 ml-3" style="font-size: 1.2rem;"></i> <span style="color:black;">Akademik Platform</span>
+            </a>
+
+            <!-- Navbar Brand - Desktop only -->
+            <a class="navbar-brand text-primary font-weight-bold d-none d-lg-block" href="{{ url_for('index') }}" style="font-size: 1.1rem;">
+                <i class="fas fa-graduation-cap mr-2" style="font-size: 1rem;"></i>Akademik Platform
+            </a>
+
+            <!-- Mobile Right Controls -->
+            <div class="d-flex align-items-center ml-auto" style="gap: 10px;">
+                <!-- Notification Icon for Mobile - Fixed in navbar -->
+                <a class="nav-link text-dark position-relative d-lg-none" href="{{ url_for('notifications') }}">
+                    <i class="fas fa-bell"></i>
+                    {% if unread_notifications > 0 %}
+                    <span class="badge badge-danger badge-pill notification-badge">{{ unread_notifications }}</span>
+                    {% endif %}
+                </a>
+
+                <!-- Filter Icon for Mobile - Fixed in navbar -->
+                <a class="nav-link text-dark d-lg-none" href="#" id="filterButton">
+                    <i class="fas fa-filter"></i>
+                </a>
+
+                <!-- Navbar Toggler -->
+                <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+
+            <!-- Mobile Filter Form -->
+            <div class="filter-sidebar collapse" id="filterCollapseMobile">
+                <div class="card card-body p-4">
+                    <form action="{{ url_for('index') }}" method="GET" class="filter-form">
+                        <h5 class="mb-4">Notları Filtrele</h5>
+                        <!--<div class="form-group">
+                            <label for="universityMobile">Üniversite</label>
+                            <select name="university" id="universityMobile" class="form-control">
+                                <option value="">Tümü</option>
+                                {% for university in universities %}
+                                <option value="{{ university }}" {% if current_university_filter==university %}selected{% endif %}>
+                                    {{ university }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>-->
+                        <div class="form-group">
+                            <label for="departmentMobile">Bölüm</label>
+                            <select name="department" id="departmentMobile" class="form-control">
+                                <option value="">Tümü</option>
+                                {% for department in departments %}
+                                <option value="{{ department }}" {% if current_department_filter==department %}selected{% endif %}>
+                                    {{ department }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="subjectMobile">Konu</label>
+                            <select name="subject" id="subjectMobile" class="form-control">
+                                <option value="">Tümü</option>
+                                {% for subject in subjects %}
+                                <option value="{{ subject }}" {% if current_subject_filter==subject %}selected{% endif %}>
+                                    {{ subject }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="text-right">
+                            <a href="{{ url_for('index') }}" class="btn btn-light mr-2">Sıfırla</a>
+                            <button type="submit" class="btn btn-primary">Filtrele</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="list-group mt-5">
+                    <h5>Üniversite</h5>
+                    <div id="university-list" class="list-group">
+                        <!-- Tüm Üniversiteler Seçeneği -->
+                        <button type="button" class="list-group-item list-group-item-action {% if not current_university_filter %}active{% endif %}" data-value="">
+                            Tümü
+                        </button>
+
+                        <!-- Üniversiteler Listesi -->
+                        {% for university in universities %}
+                        <button type="button" class="list-group-item list-group-item-action {% if current_university_filter == university %}active{% endif %}" data-value="{{ university }}">
+                            {{ university }}
+                        </button>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mobile Search Form (now moved to mobile menu) -->
+            <div class="d-lg-none w-100 mobile-search-form" style="display: none; position: absolute; top: 100%; left: 0; right: 0; padding: 10px; background-color: #fff; z-index: 1000; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                <form class="w-100" action="{{ url_for('search') }}" method="get">
+                    <div class="input-group">
+                        <input class="form-control border-0 rounded-pill pr-4 pl-4"
+                               type="search"
+                               name="q"
+                               placeholder="Ara..."
+                               aria-label="Search"
+                               style="background-color: #f8f9fa; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+                        <button class="btn btn-link text-decoration-none p-0 m-0"
+                                type="submit"
+                                style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%);">
+                            <i class="fas fa-search text-muted"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Navbar Content - Fixed position for mobile menu -->
+            <div class="collapse navbar-collapse" id="navbarNav" style="position: relative; top: 100%; left: 0; width: 100%; background-color: white; z-index: 1000; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                <ul class="navbar-nav mr-auto d-lg-flex">
+                    <!-- Mobile centered menu items -->
+                    <li class="text-center d-lg-none w-100 mb-3 mt-3">
+                        <h5 class="mb-3">Menü</h5>
+                        <div class="d-flex flex-column align-items-center">
+                            <a class="nav-link text-dark mb-2" href="{{ url_for('index') }}">Ana Sayfa</a>
+                            {% if current_user.is_authenticated %}
+                            <a class="nav-link text-dark mb-2" href="{{ url_for('create_note') }}">Not Paylaş</a>
+                            <a class="nav-link text-dark mb-2" href="{{ url_for('search') }}">Ara</a>
+                            <a class="nav-link text-dark mb-2" href="{{ url_for('logout') }}">Çıkış Yap</a>
+                            {% else %}
+                            <a class="nav-link text-dark mb-2" href="{{ url_for('login') }}">Giriş Yap</a>
+                            <a class="nav-link text-dark mb-2" href="{{ url_for('register') }}">Kaydol</a>
+                            {% endif %}
+                        </div>
+                    </li>
+
+                    <!-- Desktop menu items -->
+                    <li class="nav-item d-none d-lg-block">
+                        <a class="nav-link text-dark" href="{{ url_for('index') }}">Ana Sayfa</a>
+                    </li>
+                    {% if current_user.is_authenticated %}
+                    <li class="nav-item d-none d-lg-block">
+                        <a class="nav-link text-dark" href="{{ url_for('create_note') }}">Not Paylaş</a>
+                    </li>
+                    {% endif %}
+                </ul>
+
+                <!-- Search Form (Desktop only) -->
+                <form class="form-inline my-2 my-lg-0 mr-3 d-none d-lg-block" action="{{ url_for('search') }}" method="get">
+                    <div class="input-group">
+                        <input class="form-control border-0 rounded-pill pr-4 pl-4"
+                               type="search"
+                               name="q"
+                               placeholder="Ara..."
+                               aria-label="Search"
+                               style="background-color: #f8f9fa; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+                        <button class="btn btn-link text-decoration-none p-0 m-0"
+                                type="submit"
+                                style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%);">
+                            <i class="fas fa-search text-muted"></i>
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Right Side Navigation -->
+                <ul class="navbar-nav ml-auto">
+                    {% if current_user.is_authenticated %}
+                    <!-- Filtreleme Butonu (Desktop only) -->
+                    <li class="nav-item d-none d-lg-block">
+                        <button class="btn btn-link text-dark nav-link" type="button" data-toggle="collapse" data-target="#filterCollapse" aria-expanded="false" aria-controls="filterCollapse">
+                            <i class="fas fa-filter"></i>
+                        </button>
+                    </li>
+
+                    <!-- Notifications (Desktop only) -->
+                    <li class="nav-item d-none d-lg-block">
+                        <a class="nav-link text-dark position-relative" href="{{ url_for('notifications') }}">
+                            <i class="fas fa-bell m-1" style="font-size:1.3rem"></i>
+                            {% if unread_notifications > 0 %}
+                            <span class="badge badge-danger badge-pill notification-badge">{{ unread_notifications }}</span>
+                            {% endif %}
+                        </a>
+                    </li>
+
+                    <!-- Messages (Desktop only) -->
+                    <li class="nav-item d-none d-lg-block">
+                        <a class="nav-link text-dark position-relative" href="{{ url_for('messages') }}">
+                            <i class="fas fa-envelope m-1" style="font-size:1.3rem"></i>
+                            {% if unread_messages > 0 %}
+                            <span class="badge badge-danger badge-pill notification-badge">{{ unread_messages }}</span>
+                            {% endif %}
+                        </a>
+                    </li>
+
+                    <!-- Profile and Logout (Desktop only) -->
+                    <li class="nav-item dropdown d-none d-lg-block">
+                        <a class="nav-link text-dark" href="#" id="profileDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <img src="{{ url_for('static', filename='uploads/' + current_user.profile_image) }}" class="rounded-circle" style="width: 30px; height: 30px;" alt="Profil Resmi">
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right shadow" aria-labelledby="profileDropdown">
+                            <a class="dropdown-item" href="{{ url_for('user_profile', username=current_user.username) }}">Profil</a>
+                            <a class="dropdown-item" href="{{ url_for('logout') }}">Çıkış Yap</a>
+                        </div>
+                    </li>
+                    {% else %}
+
+                    <!-- Login and Register (Desktop only) -->
+                    <li class="nav-item d-none d-lg-block">
+                        <a class="nav-link text-dark" href="{{ url_for('login') }}">Giriş Yap</a>
+                    </li>
+                    <li class="nav-item d-none d-lg-block">
+                        <a class="nav-link text-dark" href="{{ url_for('register') }}">Kaydol</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Üniversitedeki Kullanıcı Listesi -->
+    <div class="col-md-12">
+        <div class="card mb-0">
+            <!-- Başlık ve İkon Ortalanmış -->
+            <div class="card-header text-center d-flex flex-column align-items-center justify-content-center">
+                <h5 class="mb-0">
+                    <i class="fa fa-user" style="font-size: 1.5rem;"></i> <!-- İkon -->
+                    {% if current_university_filter %}
+                    <span style="display: block; margin-top: 0.5rem;">{{ current_university_filter }} Kullanıcı Paylaşımları</span>
+                    {% else %}
+                    <span style="display: block; margin-top: 0.5rem;">Tüm Üniversiteler</span>
+                    {% endif %}
+                </h5>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filtreleme bölümü -->
+    <div class="filter-section">
+        <div class="collapse" id="filterCollapse">
+            <div class="card mb-4">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0"><i class="fas fa-filter"></i> Notları Filtrele</h5>
+                </div>
+                <div class="card-body">
+                    <form action="{{ url_for('index') }}" method="GET" class="filter-form">
+                        <div class="row">
+                            <div class="col-12 col-md-4">
+                                <!--<div class="form-group">
+                                    <label for="university">Üniversite</label>
+                                    <select name="university" id="university" class="form-control">
+                                        <option value="">Tümü</option>
+                                        {% for university in universities %}
+                                        <option value="{{ university }}" {% if current_university_filter==university %}selected{% endif %}>
+                                            {{ university }}
+                                        </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>-->
+                            </div>
+                            <div class="col-12 col-md-4">
+                                <div class="form-group">
+                                    <label for="department">Bölüm</label>
+                                    <select name="department" id="department" class="form-control">
+                                        <option value="">Tümü</option>
+                                        {% for department in departments %}
+                                        <option value="{{ department }}" {% if current_department_filter==department %}selected{% endif %}>
+                                            {{ department }}
+                                        </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-md-4">
+                                <div class="form-group">
+                                    <label for="subject">Konu</label>
+                                    <select name="subject" id="subject" class="form-control">
+                                        <option value="">Tümü</option>
+                                        {% for subject in subjects %}
+                                        <option value="{{ subject }}" {% if current_subject_filter==subject %}selected{% endif %}>
+                                            {{ subject }}
+                                        </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <a href="{{ url_for('index') }}" class="btn btn-light mr-2">Sıfırla</a>
+                            <button type="submit" class="btn btn-primary">Filtrele</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-info alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </div>
+
+    <!-- Mobil Alt Menü -->
+    {% if current_user.is_authenticated %}
+    <div class="mobile-bottom-nav d-lg-none">
+        <a href="{{ url_for('index') }}" class="mobile-nav-item {% if request.path == url_for('index') %}active{% endif %}">
+            <i class="fas fa-home"></i>
+        </a>
+        <a href="{{ url_for('search') }}" class="mobile-nav-item {% if request.path == url_for('search') %}active{% endif %}">
+            <i class="fas fa-search"></i>
+        </a>
+        <a href="{{ url_for('create_note') }}" class="mobile-nav-item {% if request.path == url_for('create_note') %}active{% endif %}">
+            <i class="fas fa-plus-square"></i>
+        </a>
+        <a href="{{ url_for('messages') }}" class="mobile-nav-item {% if request.path == url_for('messages') %}active{% endif %}">
+            <i class="fas fa-envelope"></i>
+            {% if unread_messages > 0 %}
+            <span class="badge badge-danger badge-pill notification-badge" style="position: absolute; top: 0; right: 0; font-size: 0.6rem;">{{ unread_messages }}</span>
+            {% endif %}
+        </a>
+        <a href="{{ url_for('user_profile', username=current_user.username) }}" class="mobile-nav-item {% if request.path == url_for('user_profile', username=current_user.username) %}active{% endif %}">
+            <i class="fas fa-user"></i>
+        </a>
+    </div>
+    {% endif %}
+
+    <footer class="footer mt-5 py-3 bg-light">
+        <div class="container text-center">
+            <span class="text-muted">© <span id="currentYear"></span> Akademik Not Paylaşım Platformu</span> <br />
+            created by <a href="https://linktr.ee/acodex">Acodex Academy</a>
+        </div>
+    </footer>
+
+    <script>
+        // Güncel yılı al ve "currentYear" ID'li elemente yaz
+        document.getElementById("currentYear").textContent = new Date().getFullYear();
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const universityList = document.getElementById('university-list');
+
+            // Üniversite öğelerine tıklama olayı ekle
+            universityList.addEventListener('click', function (event) {
+                if (event.target.classList.contains('list-group-item')) {
+                    // Aktif sınıfını değiştir
+                    const activeItem = universityList.querySelector('.active');
+                    if (activeItem) {
+                        activeItem.classList.remove('active');
+                    }
+                    event.target.classList.add('active');
+
+                    // Seçilen üniversiteyi al
+                    const selectedUniversity = event.target.getAttribute('data-value');
+
+                    // URL'yi güncelle ve sayfayı yeniden yükle
+                    const url = new URL(window.location.href);
+                    if (selectedUniversity) {
+                        url.searchParams.set('university', selectedUniversity);
+                    } else {
+                        url.searchParams.delete('university');
+                    }
+                    window.location.href = url.toString();
+                }
+            });
+        });
+    </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        // Sistem paylaşım API'si
+        function shareNote(noteId, noteTitle, noteUrl) {
+            if (navigator.share) {
+                navigator.share({
+                    title: noteTitle,
+                    text: 'Akademik Platform\'da bir not paylaşıldı: ' + noteTitle,
+                    url: noteUrl
+                })
+                    .then(() => console.log('Paylaşım başarılı'))
+                    .catch((error) => console.log('Paylaşım hatası:', error));
+            } else {
+                // Paylaşım API desteklenmiyorsa kopyala
+                navigator.clipboard.writeText(noteUrl)
+                    .then(() => alert('Bağlantı panoya kopyalandı!'))
+                    .catch(() => alert('Bağlantı: ' + noteUrl));
+            }
+            return false;
+        }
+
+        $(document).ready(function () {
+            // Toggle comments
+            $(".toggle-comments").click(function () {
+                const target = $(this).data('target');
+                $(target).collapse('toggle');
+            });
+
+            // Make sure the chat tab script works
+            $('.list-group-item-action').click(function () {
+                $(this).tab('show');
+            });
+
+            // Auto-scroll chat bodies
+            var chatBodies = $('.chat-body');
+            chatBodies.each(function () {
+                $(this).scrollTop($(this)[0].scrollHeight);
+            });
+
+            // URL'leri tıklanabilir yap
+            $('.note-content-truncate, .comment-text, .reply-text, .note-content, .card-text').each(function () {
+                const content = $(this).html();
+                const linkedContent = content.replace(
+                    /(https?:\/\/[^\s]+)/g,
+                    '<a href="$1" target="_blank" class="content-link">$1</a>'
+                );
+                $(this).html(linkedContent);
+            });
+
+            // Instagram tarzı mobil menü için aktif sayfa vurgusunu güçlendir
+            const currentPath = window.location.pathname;
+            $('.mobile-nav-item').each(function () {
+                if ($(this).attr('href') === currentPath) {
+                    $(this).addClass('active');
+                }
+            });
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const filterButton = document.getElementById('filterButton');
+            const filterSidebar = document.getElementById('filterCollapseMobile');
+
+            // Filtreleme simgesine tıklandığında
+            filterButton.addEventListener('click', function (event) {
+                event.stopPropagation(); // Diğer tıklama olaylarını engelle
+                filterSidebar.classList.toggle('show');
+            });
+
+            // Sayfa başka bir yere tıklandığında filtreleme formunu kapat
+            document.addEventListener('click', function (event) {
+                if (!filterSidebar.contains(event.target) && !filterButton.contains(event.target)) {
+                    filterSidebar.classList.remove('show');
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
